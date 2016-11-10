@@ -56,11 +56,11 @@ To integrate JRAlertController into your Xcode project using CocoaPods, specify 
 
 ```ruby
 source 'https://github.com/CocoaPods/Specs.git'
-platform :ios, '10.0'
+platform :ios, '8.0'
 use_frameworks!
 
 target '<Your Target Name>' do
-    pod 'JRAlertController', '~> 4.0'
+    pod 'JRAlertController', '~> 1.0。0'
 end
 ```
 
