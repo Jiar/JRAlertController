@@ -6,7 +6,7 @@ Pod::Spec.new do |s|
   s.license = { :type => "Apache-2.0", :file => "LICENSE" }
   s.social_media_url = 'https://twitter.com/Jiar_world'
   s.author = { "Jiar" => "jiar.world@gmail.com" }
-  s.platform = :ios, "8.0"
+  s.ios.deployment_target = '8.0'
   s.source = { :git => "https://github.com/Jiar/JRAlertController.git", :tag => "#{s.version}" }
   s.source_files = 'Source/*.swift'
   s.module_name = 'JRAlertController'
