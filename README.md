@@ -7,6 +7,9 @@ Based on Apple's UIAlertController control API, rebuilt it with swift, JRAlertCo
 
 ### JRAlertController
 
+##### JRAlertController_Main
+![JRAlertController_alert_simple](https://raw.githubusercontent.com/Jiar/JRAlertController/master/Screenshot/JRAlertController_Main.gif)
+
 ##### JRAlertController_alert_simple
 ![JRAlertController_alert_simple](https://raw.githubusercontent.com/Jiar/JRAlertController/master/Screenshot/JRAlertController_alert_simple.gif)
 
