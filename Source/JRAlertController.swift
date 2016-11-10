@@ -282,7 +282,7 @@ open class JRAlertController : UIViewController, UITableViewDelegate, UITableVie
         rootView.present(self, animated: false, completion: nil)
     }
     
-    /// Use this function to dissmiss the ViewController
+    /// Use this function to dismiss the ViewController
     public func jr_dismiss() {
         self.dismiss(animated: false, completion: nil)
     }
