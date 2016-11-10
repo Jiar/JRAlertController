@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11542" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="Example" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
+                        <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8xm-DR-cl8">
+                                <rect key="frame" x="72.5" y="100" width="230" height="18"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="230" id="98p-Uw-MvT"/>
+                                    <constraint firstAttribute="height" constant="18" id="LZU-R0-nSb"/>
+                                </constraints>
+                                <state key="normal" title="JRAlertController_alert_simple"/>
+                                <connections>
+                                    <action selector="alertSimple:" destination="BYZ-38-t0r" eventType="touchUpInside" id="vgo-vO-XhF"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Li-g8-d7B">
+                                <rect key="frame" x="72.5" y="136" width="230" height="18"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="18" id="RFk-Lw-Fi0"/>
+                                    <constraint firstAttribute="width" constant="230" id="tpj-vC-gc4"/>
+                                </constraints>
+                                <state key="normal" title="JRAlertController_alert_multiple"/>
+                                <connections>
+                                    <action selector="alertMultiple:" destination="BYZ-38-t0r" eventType="touchUpInside" id="AFd-8L-q1I"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sRq-eq-DwP">
+                                <rect key="frame" x="72.5" y="172" width="230" height="18"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="18" id="88N-dK-G1d"/>
+                                    <constraint firstAttribute="width" constant="230" id="qMT-ah-Ozb"/>
+                                </constraints>
+                                <state key="normal" title="JRAlertController_sheet_simple"/>
+                                <connections>
+                                    <action selector="sheetSimple:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ZER-IJ-nJ1"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qDA-VO-fJA">
+                                <rect key="frame" x="72.5" y="208" width="230" height="18"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="230" id="Qd7-rn-v9L"/>
+                                    <constraint firstAttribute="height" constant="18" id="Rzi-lK-ayE"/>
+                                </constraints>
+                                <state key="normal" title="JRAlertController_sheet_multiple"/>
+                                <connections>
+                                    <action selector="sheetMultiple:" destination="BYZ-38-t0r" eventType="touchUpInside" id="VPf-QT-Fg9"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="JRAlertController" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FyB-71-iq1">
+                                <rect key="frame" x="121" y="64" width="132" height="18"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="132" id="aS3-WN-bsS"/>
+                                    <constraint firstAttribute="height" constant="18" id="hGd-w2-XsB"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="UIAlertController" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FI9-Ti-be8">
+                                <rect key="frame" x="121.5" y="250" width="132" height="18"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="132" id="00K-vr-fLQ"/>
+                                    <constraint firstAttribute="height" constant="18" id="VGr-Ba-veg"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5FR-2A-xzw">
+                                <rect key="frame" x="72.5" y="286" width="230" height="18"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="18" id="TgO-JN-Qbi"/>
+                                    <constraint firstAttribute="width" constant="230" id="dqc-gM-w4z"/>
+                                </constraints>
+                                <state key="normal" title="UIAlertController_alert_simple"/>
+                                <connections>
+                                    <action selector="UIAlertControllerAlertSimple:" destination="BYZ-38-t0r" eventType="touchUpInside" id="lZW-VY-HPe"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f78-u4-cr6">
+                                <rect key="frame" x="72.5" y="322" width="230" height="18"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="18" id="LSU-QC-yjN"/>
+                                    <constraint firstAttribute="width" constant="230" id="M9R-gJ-fgk"/>
+                                </constraints>
+                                <state key="normal" title="UIAlertController_alert_multiple"/>
+                                <connections>
+                                    <action selector="UIAlertControllerAlertMultiple:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Kt3-5A-ITf"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RGw-jb-FE5">
+                                <rect key="frame" x="72.5" y="358" width="230" height="18"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="230" id="GMZ-xq-LgS"/>
+                                    <constraint firstAttribute="height" constant="18" id="Y3u-cL-b2o"/>
+                                </constraints>
+                                <state key="normal" title="UIAlertController_sheet_simple"/>
+                                <connections>
+                                    <action selector="UIAlertControllerSheetSimple:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Qwc-RO-cyN"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zVK-HR-TjW">
+                                <rect key="frame" x="72.5" y="394" width="230" height="18"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="18" id="98G-gM-Rxn"/>
+                                    <constraint firstAttribute="width" constant="230" id="ZGD-f5-K80"/>
+                                </constraints>
+                                <state key="normal" title="UIAlertController_sheet_multiple"/>
+                                <connections>
+                                    <action selector="UIAlertControllerSheetMultiple:" destination="BYZ-38-t0r" eventType="touchUpInside" id="rKH-qX-flD"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Author" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FbB-Dr-xqd">
+                                <rect key="frame" x="0.0" y="531" width="375" height="22"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jPF-40-3h0">
+                                <rect key="frame" x="0.0" y="561" width="375" height="22"/>
+                                <state key="normal" title="Jiar"/>
+                                <connections>
+                                    <action selector="Jiar:" destination="BYZ-38-t0r" eventType="touchUpInside" id="HP4-Kn-QkN"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jVy-fN-qtZ">
+                                <rect key="frame" x="0.0" y="591" width="375" height="22"/>
+                                <state key="normal" title="Github"/>
+                                <connections>
+                                    <action selector="Github:" destination="BYZ-38-t0r" eventType="touchUpInside" id="HUx-u4-BHR"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sf8-do-hey">
+                                <rect key="frame" x="0.0" y="621" width="375" height="22"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="22" id="vkv-Cb-SNr"/>
+                                </constraints>
+                                <state key="normal" title="Blog"/>
+                                <connections>
+                                    <action selector="Blog:" destination="BYZ-38-t0r" eventType="touchUpInside" id="DxM-j3-0lc"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="FbB-Dr-xqd" firstAttribute="leading" secondItem="jPF-40-3h0" secondAttribute="leading" id="08K-ls-6a8"/>
+                            <constraint firstItem="f78-u4-cr6" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="09O-Fr-68l"/>
+                            <constraint firstItem="5FR-2A-xzw" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="2GO-Hc-SWS"/>
+                            <constraint firstAttribute="trailing" secondItem="sf8-do-hey" secondAttribute="trailing" id="3Ja-fn-am7"/>
+                            <constraint firstItem="8xm-DR-cl8" firstAttribute="top" secondItem="FyB-71-iq1" secondAttribute="bottom" constant="18" id="3aJ-VW-VUD"/>
+                            <constraint firstItem="FyB-71-iq1" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="7fi-bb-BpN"/>
+                            <constraint firstItem="f78-u4-cr6" firstAttribute="top" secondItem="5FR-2A-xzw" secondAttribute="bottom" constant="18" id="D1F-RW-bYH"/>
+                            <constraint firstItem="jVy-fN-qtZ" firstAttribute="leading" secondItem="sf8-do-hey" secondAttribute="leading" id="Fi1-Vc-X7N"/>
+                            <constraint firstItem="RGw-jb-FE5" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="KvN-aA-7HE"/>
+                            <constraint firstItem="5FR-2A-xzw" firstAttribute="top" secondItem="FI9-Ti-be8" secondAttribute="bottom" constant="18" id="OAv-aU-BKe"/>
+                            <constraint firstItem="jPF-40-3h0" firstAttribute="trailing" secondItem="jVy-fN-qtZ" secondAttribute="trailing" id="PdR-SK-EcX"/>
+                            <constraint firstItem="0Li-g8-d7B" firstAttribute="top" secondItem="8xm-DR-cl8" secondAttribute="bottom" constant="18" id="Sif-KH-gkW"/>
+                            <constraint firstItem="0Li-g8-d7B" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Sv7-gL-dpJ"/>
+                            <constraint firstItem="jPF-40-3h0" firstAttribute="top" secondItem="FbB-Dr-xqd" secondAttribute="bottom" constant="8" id="Tfe-Vs-xPc"/>
+                            <constraint firstItem="jVy-fN-qtZ" firstAttribute="trailing" secondItem="sf8-do-hey" secondAttribute="trailing" id="Vsv-8k-KKm"/>
+                            <constraint firstItem="8xm-DR-cl8" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="WEk-x9-o8F"/>
+                            <constraint firstItem="FbB-Dr-xqd" firstAttribute="height" secondItem="jPF-40-3h0" secondAttribute="height" id="bkI-ap-R91"/>
+                            <constraint firstItem="jVy-fN-qtZ" firstAttribute="height" secondItem="sf8-do-hey" secondAttribute="height" id="dKB-TL-ESj"/>
+                            <constraint firstItem="jPF-40-3h0" firstAttribute="height" secondItem="jVy-fN-qtZ" secondAttribute="height" id="dws-1g-7tn"/>
+                            <constraint firstItem="sf8-do-hey" firstAttribute="top" secondItem="jVy-fN-qtZ" secondAttribute="bottom" constant="8" id="eA9-M1-0lw"/>
+                            <constraint firstItem="jVy-fN-qtZ" firstAttribute="top" secondItem="jPF-40-3h0" secondAttribute="bottom" constant="8" id="eX5-Z0-6AO"/>
+                            <constraint firstItem="sf8-do-hey" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="go4-WM-BFZ"/>
+                            <constraint firstItem="qDA-VO-fJA" firstAttribute="top" secondItem="sRq-eq-DwP" secondAttribute="bottom" constant="18" id="iHo-WP-Eob"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="sf8-do-hey" secondAttribute="bottom" constant="24" id="iOp-d4-cgG"/>
+                            <constraint firstItem="sRq-eq-DwP" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="joH-Fe-BOR"/>
+                            <constraint firstItem="sRq-eq-DwP" firstAttribute="top" secondItem="0Li-g8-d7B" secondAttribute="bottom" constant="18" id="jqK-2T-SoC"/>
+                            <constraint firstItem="zVK-HR-TjW" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="kZj-Mj-fUk"/>
+                            <constraint firstItem="FI9-Ti-be8" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="nU4-Sf-aoL"/>
+                            <constraint firstItem="qDA-VO-fJA" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="nZz-rt-7lj"/>
+                            <constraint firstItem="jPF-40-3h0" firstAttribute="leading" secondItem="jVy-fN-qtZ" secondAttribute="leading" id="rvy-Vb-WtA"/>
+                            <constraint firstItem="FI9-Ti-be8" firstAttribute="top" secondItem="qDA-VO-fJA" secondAttribute="bottom" constant="24" id="sWW-1r-Xal"/>
+                            <constraint firstItem="FbB-Dr-xqd" firstAttribute="trailing" secondItem="jPF-40-3h0" secondAttribute="trailing" id="tYS-a2-rqn"/>
+                            <constraint firstItem="FyB-71-iq1" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" constant="64" id="u5u-4S-jyV"/>
+                            <constraint firstItem="RGw-jb-FE5" firstAttribute="top" secondItem="f78-u4-cr6" secondAttribute="bottom" constant="18" id="xNb-xC-LDc"/>
+                            <constraint firstItem="zVK-HR-TjW" firstAttribute="top" secondItem="RGw-jb-FE5" secondAttribute="bottom" constant="18" id="z7J-Ps-MpU"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="32.799999999999997" y="38.23088455772114"/>
+        </scene>
+    </scenes>
+</document>
