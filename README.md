@@ -63,7 +63,7 @@ platform :ios, '8.0'
 use_frameworks!
 
 target '<Your Target Name>' do
-    pod 'JRAlertController', '~> 1.0。0'
+    pod 'JRAlertController', '~> 1.0.0'
 end
 ```
 
