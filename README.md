@@ -1,7 +1,7 @@
 # JRAlertController
 Based on Apple's UIAlertController control API, rebuilt it with swift, JRAlertController is more in line with mainstream style of the APP.
 
-![JRAlertController](https://raw.githubusercontent.com/Jiar/JRAlertController/master/JR_clear.png)
+![JRAlertController](https://raw.githubusercontent.com/Jiar/JRAlertController/master/JR_Show.png)
 
 ## Screenshot
 
