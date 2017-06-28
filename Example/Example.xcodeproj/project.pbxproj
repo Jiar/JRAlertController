@@ -11,7 +11,8 @@
 		804C78B31DD42F050096D427 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 804C78AF1DD42F050096D427 /* Info.plist */; };
 		804C78B71DD42F1F0096D427 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804C78B51DD42F1F0096D427 /* AppDelegate.swift */; };
 		804C78B81DD42F1F0096D427 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804C78B61DD42F1F0096D427 /* ViewController.swift */; };
-		80F116521DD43B3A00215326 /* JRAlertController.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 803F8E8D1DD433B0002DF758 /* JRAlertController.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		809ED0D81F037DBC005452E6 /* JRAlertController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 809ED0D71F037DBC005452E6 /* JRAlertController.framework */; };
+		809ED0D91F037DE2005452E6 /* JRAlertController.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 809ED0D71F037DBC005452E6 /* JRAlertController.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		80F116531DD43B6000215326 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 804C78AB1DD42F050096D427 /* LaunchScreen.storyboard */; };
 		80F116541DD43B6000215326 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 804C78AD1DD42F050096D427 /* Main.storyboard */; };
 /* End PBXBuildFile section */
@@ -23,7 +24,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				80F116521DD43B3A00215326 /* JRAlertController.framework in Embed Frameworks */,
+				809ED0D91F037DE2005452E6 /* JRAlertController.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -39,6 +40,7 @@
 		804C78B41DD42F1E0096D427 /* Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		804C78B51DD42F1F0096D427 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		804C78B61DD42F1F0096D427 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		809ED0D71F037DBC005452E6 /* JRAlertController.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JRAlertController.framework; path = "../../../../Library/Developer/Xcode/DerivedData/JRAlertController-dxbpfohqmkugougjkcukactamoxl/Build/Products/Debug-iphoneos/JRAlertController.framework"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -46,6 +48,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				809ED0D81F037DBC005452E6 /* JRAlertController.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -55,6 +58,7 @@
 		803F8E8C1DD433B0002DF758 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				809ED0D71F037DBC005452E6 /* JRAlertController.framework */,
 				803F8E8D1DD433B0002DF758 /* JRAlertController.framework */,
 			);
 			name = Frameworks;
@@ -131,7 +135,7 @@
 				TargetAttributes = {
 					80677BB41DD4248400D4A072 = {
 						CreatedOnToolsVersion = 8.1;
-						DevelopmentTeam = VF8EQ9X7Q9;
+						DevelopmentTeam = D4MTBNMTU5;
 						LastSwiftMigration = 0810;
 						ProvisioningStyle = Automatic;
 					};
@@ -300,7 +304,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = VF8EQ9X7Q9;
+				DEVELOPMENT_TEAM = D4MTBNMTU5;
 				INFOPLIST_FILE = "$(SRCROOT)/Resources/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -317,7 +321,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = VF8EQ9X7Q9;
+				DEVELOPMENT_TEAM = D4MTBNMTU5;
 				INFOPLIST_FILE = "$(SRCROOT)/Resources/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

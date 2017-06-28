@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 /// Styles to apply to action buttons in an alert.
-public enum JRAlertActionStyle : Int {
+public enum JRAlertActionStyle: Int {
     
     case `default`
     case cancel
@@ -19,7 +19,7 @@ public enum JRAlertActionStyle : Int {
 }
 
 /// Constants indicating the type of alert to display.
-public enum JRAlertControllerStyle : Int {
+public enum JRAlertControllerStyle: Int {
     
     case actionSheet
     case alert
@@ -50,16 +50,16 @@ open class JRAlertAction : NSObject, NSCopying {
     /// A new alert action object.
     public convenience init(title: String?, style: JRAlertActionStyle, handler: ((JRAlertAction) -> Swift.Void)? = nil) {
         self.init()
-        self._title = title
-        self._style = style
-        self._handler = handler
+        _title = title
+        _style = style
+        _handler = handler
     }
     
     /// The title of the action’s button.
     /// This property is set to the value you specified in the init(title:style:handler:) method.
     open var title: String? {
         get {
-            return self._title
+            return _title
         }
     }
     
@@ -67,7 +67,7 @@ open class JRAlertAction : NSObject, NSCopying {
     /// This property is set to the value you specified in the init(title:style:handler:) method.
     open var style: JRAlertActionStyle {
         get {
-            return self._style
+            return _style
         }
     }
     
@@ -76,9 +76,9 @@ open class JRAlertAction : NSObject, NSCopying {
     open var isEnabled: Bool = true
     
     public func copy(with zone: NSZone? = nil) -> Any {
-        let title = self._title
-        let style = self._style
-        let handler = self._handler
+        let title = _title
+        let style = _style
+        let handler = _handler
         return JRAlertAction(title: title, style: style, handler: handler)
     }
     
@@ -116,14 +116,9 @@ open class JRAlertController : UIViewController, UITableViewDelegate, UITableVie
     
     /**************************** open api -start ****************************/
     
-    public override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-        modalPresentationStyle = .overCurrentContext
-    }
-    
     public required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        modalPresentationStyle = .overCurrentContext
+        assert(false, "use \"public init(title: String? = default, message: String? = default, preferredStyle: JRAlertControllerStyle = default)\" to replace")
     }
     
     /// Creates and returns a view controller for displaying an alert to the user.
@@ -136,11 +131,12 @@ open class JRAlertController : UIViewController, UITableViewDelegate, UITableVie
     /// The style to use when presenting the alert controller. Use this parameter to configure the alert controller as an action sheet or as a modal alert.
     /// - Returns
     /// An initialized alert controller object.
-    public convenience init(title: String? = nil, message: String? = nil, preferredStyle: JRAlertControllerStyle = .actionSheet) {
-        self.init()
-        self._title = title
-        self._message = message
-        self._preferredStyle = preferredStyle
+    public init(title: String? = nil, message: String? = nil, preferredStyle: JRAlertControllerStyle = .actionSheet) {
+        super.init(nibName: nil, bundle: nil)
+        modalPresentationStyle = .overCurrentContext
+        _title = title
+        _message = message
+        _preferredStyle = preferredStyle
     }
     
     /// Attaches an action object to the alert or action sheet.
@@ -185,7 +181,7 @@ open class JRAlertController : UIViewController, UITableViewDelegate, UITableVie
     open var preferredAction: JRAlertAction? {
         set {
             assert(_preferredStyle == .alert, "The 'preferredStyle' property must be alert.")
-            self._preferredAction = newValue
+            _preferredAction = newValue
             if let actions = _actions {
                 if let newValue = newValue {
                     let index = actions.index(of: newValue)
@@ -198,7 +194,7 @@ open class JRAlertController : UIViewController, UITableViewDelegate, UITableVie
             }
         }
         get {
-            return self._preferredAction
+            return _preferredAction
         }
     }
     
@@ -216,7 +212,7 @@ open class JRAlertController : UIViewController, UITableViewDelegate, UITableVie
         } else {
             _textFields = []
         }
-        let textField = UITextField.init()
+        let textField = UITextField()
         textField.delegate = self
         textField.returnKeyType = .done
         textField.font = UIFont.systemFont(ofSize: 14)
@@ -240,7 +236,7 @@ open class JRAlertController : UIViewController, UITableViewDelegate, UITableVie
     /// Use this property to access the text fields displayed by the alert. The text fields are in the order in which you added them to the alert controller. This order also corresponds to the order in which they are displayed in the alert.
     open var textFields: [UITextField]? {
         get {
-            return self._textFields
+            return _textFields
         }
     }
     
@@ -249,10 +245,10 @@ open class JRAlertController : UIViewController, UITableViewDelegate, UITableVie
     /// The title string is displayed prominently in the alert or action sheet. You should use this string to get the user’s attention and communicate the reason for displaying the alert.
     open override var title: String? {
         set {
-            self._title = newValue
+            _title = newValue
         }
         get {
-            return self._title
+            return _title
         }
     }
     
@@ -261,10 +257,10 @@ open class JRAlertController : UIViewController, UITableViewDelegate, UITableVie
     /// The message string is displayed below the title string and is less prominent. Use this string to provide additional context about the reason for the alert or about the actions that the user might take.
     open var message: String? {
         set {
-            self._message = newValue
+            _message = newValue
         }
         get {
-            return self._message
+            return _message
         }
     }
     
@@ -273,7 +269,7 @@ open class JRAlertController : UIViewController, UITableViewDelegate, UITableVie
     /// The value of this property is set to the value you specified in the init(title:message:preferredStyle:) method. This value determines how the alert is displayed onscreen.
     open var preferredStyle: JRAlertControllerStyle {
         get {
-            return self._preferredStyle
+            return _preferredStyle
         }
     }
     
@@ -284,7 +280,7 @@ open class JRAlertController : UIViewController, UITableViewDelegate, UITableVie
     
     /// Use this function to dismiss the ViewController
     public func jr_dismiss() {
-        self.dismiss(animated: false, completion: nil)
+        dismiss(animated: false, completion: nil)
     }
     
     /**************************** open api -end ****************************/
@@ -323,8 +319,8 @@ open class JRAlertController : UIViewController, UITableViewDelegate, UITableVie
     /**************************** achieve func -start ****************************/
     
     private let DivideHeight:Double = 4
-    private let tableView:UITableView = UITableView.init(frame: CGRect.zero, style: .grouped)
-    private let showView:UIView = UIView.init()
+    private let tableView:UITableView = UITableView(frame: CGRect.zero, style: .grouped)
+    private let showView:UIView = UIView()
     private var titleLable:UILabel?
     private var messageLabel:UILabel?
     private var cutLine: UIView?
@@ -353,10 +349,10 @@ open class JRAlertController : UIViewController, UITableViewDelegate, UITableVie
         let showViewHeight = initBottom(tableBottom)
         switch preferredStyle {
         case .actionSheet:
-            showView.frame = CGRect.init(x: 0, y: DeviceHeight()-showViewHeight, width: DeviceWidth(), height: showViewHeight)
+            showView.frame = CGRect(x: 0, y: DeviceHeight()-showViewHeight, width: DeviceWidth(), height: showViewHeight)
             break
         case .alert:
-            showView.frame = CGRect.init(x: (DeviceWidth()-MAXWidth())/2, y: (DeviceHeight()-showViewHeight)/2, width: MAXWidth(), height: showViewHeight)
+            showView.frame = CGRect(x: (DeviceWidth()-MAXWidth())/2, y: (DeviceHeight()-showViewHeight)/2, width: MAXWidth(), height: showViewHeight)
             showView.layer.masksToBounds = true
             break
         }
@@ -371,10 +367,10 @@ open class JRAlertController : UIViewController, UITableViewDelegate, UITableVie
         if let title = _title {
             switch preferredStyle {
             case .actionSheet:
-                titleLable = UILabel.init(frame: CGRect.init(x: 0, y: 0, width: DeviceWidth(), height: 44))
+                titleLable = UILabel(frame: CGRect(x: 0, y: 0, width: DeviceWidth(), height: 44))
                 break
             case .alert:
-                titleLable = UILabel.init(frame: CGRect.init(x: 0, y: 0, width: MAXWidth(), height: 44))
+                titleLable = UILabel(frame: CGRect(x: 0, y: 0, width: MAXWidth(), height: 44))
                 break
             }
             titleLable!.backgroundColor = .white
@@ -388,7 +384,7 @@ open class JRAlertController : UIViewController, UITableViewDelegate, UITableVie
         }
         if let message = _message {
             let font = UIFont.systemFont(ofSize: 12)
-            var width:Double
+            var width: Double
             switch preferredStyle {
             case .actionSheet:
                 width = DeviceWidth()
@@ -408,7 +404,7 @@ open class JRAlertController : UIViewController, UITableViewDelegate, UITableVie
             if !haveTitle {
                 messageLabelHeight += 24
             }
-            messageLabel = UILabel.init(frame: CGRect.init(x: 0, y: y, width: width, height: messageLabelHeight))
+            messageLabel = UILabel(frame: CGRect(x: 0, y: y, width: width, height: messageLabelHeight))
             messageLabel!.backgroundColor = .white
             messageLabel!.numberOfLines = 0
             messageLabel!.layer.borderWidth = 0
@@ -429,14 +425,14 @@ open class JRAlertController : UIViewController, UITableViewDelegate, UITableVie
     }
     
     private func initTable(_ y: Double) -> Double {
-        var actionsCount = self.actions.count
+        var actionsCount = actions.count
         if _haveAddCancel {
             actionsCount -= 1
         }
         switch preferredStyle {
         case .actionSheet:
             let tableHeight = Double(actionsCount)*JRAlertControllerCellRowHeight(byStyle: .action)
-            tableView.frame = CGRect.init(x: 0, y: y, width: DeviceWidth(), height: tableHeight)
+            tableView.frame = CGRect(x: 0, y: y, width: DeviceWidth(), height: tableHeight)
             break
         case .alert:
             var textFieldsCount = 0
@@ -444,7 +440,7 @@ open class JRAlertController : UIViewController, UITableViewDelegate, UITableVie
                 textFieldsCount = textFields.count
             }
             let tableHeight = Double(actionsCount)*JRAlertControllerCellRowHeight(byStyle: .action)+Double(textFieldsCount)*JRAlertControllerCellRowHeight(byStyle: .textField)
-            tableView.frame = CGRect.init(x: 0, y: y, width: MAXWidth(), height: tableHeight)
+            tableView.frame = CGRect(x: 0, y: y, width: MAXWidth(), height: tableHeight)
             break
         }
         tableView.backgroundColor = .white
@@ -459,20 +455,20 @@ open class JRAlertController : UIViewController, UITableViewDelegate, UITableVie
         if _haveAddCancel {
             switch preferredStyle {
             case .actionSheet:
-                cutLine = UIView.init(frame: CGRect.init(x: 0, y: y, width: DeviceWidth(), height: 6))
+                cutLine = UIView(frame: CGRect(x: 0, y: y, width: DeviceWidth(), height: 6))
                 break
             case .alert:
-                cutLine = UIView.init(frame: CGRect.init(x: 0, y: y, width: MAXWidth(), height: 6))
+                cutLine = UIView(frame: CGRect(x: 0, y: y, width: MAXWidth(), height: 6))
                 break
             }
             cutLine!.backgroundColor = RGBA(r: 240, g: 240, b: 240)
             showView.addSubview(cutLine!)
             switch preferredStyle {
             case .actionSheet:
-                cancelbtn = UIButton.init(frame: CGRect.init(x: 0, y: cutLine!.bottom(), width: DeviceWidth(), height: JRAlertControllerCellRowHeight(byStyle: .action)))
+                cancelbtn = UIButton(frame: CGRect(x: 0, y: cutLine!.bottom(), width: DeviceWidth(), height: JRAlertControllerCellRowHeight(byStyle: .action)))
                 break
             case .alert:
-                cancelbtn = UIButton.init(frame: CGRect.init(x: 0, y: cutLine!.bottom(), width: MAXWidth(), height: JRAlertControllerCellRowHeight(byStyle: .action)))
+                cancelbtn = UIButton(frame: CGRect(x: 0, y: cutLine!.bottom(), width: MAXWidth(), height: JRAlertControllerCellRowHeight(byStyle: .action)))
                 break
             }
             cancelbtn!.backgroundColor = .white
@@ -527,6 +523,16 @@ open class JRAlertController : UIViewController, UITableViewDelegate, UITableVie
         loadAppearAnimation()
     }
     
+    private func initFirstResponder() {
+        if preferredStyle == .alert {
+            if let textFields = _textFields {
+                if textFields.count > 0 {
+                    textFields[0].becomeFirstResponder()
+                }
+            }
+        }
+    }
+    
     private func loadAppearAnimation() {
         switch preferredStyle {
         case .actionSheet:
@@ -548,6 +554,7 @@ open class JRAlertController : UIViewController, UITableViewDelegate, UITableVie
             UIView.animate(withDuration: 0.3, animations: { 
                 self.view.backgroundColor = RGBA(r: 0, g: 0, b: 0, a: 0.4)
                 self.showView.alpha = 1
+                self.initFirstResponder()
             })
             break
         }
@@ -582,13 +589,13 @@ open class JRAlertController : UIViewController, UITableViewDelegate, UITableVie
     }
     
     private func initCancelGesture() {
-        _cancelGesture = UITapGestureRecognizer.init(target: self, action: #selector(cancelAction))
+        _cancelGesture = UITapGestureRecognizer(target: self, action: #selector(cancelAction))
         _cancelGesture.delegate = self
         view.addGestureRecognizer(_cancelGesture)
     }
     
     private func initResignGesture() {
-        _resignGesture = UITapGestureRecognizer.init(target: self, action: #selector(resignAction))
+        _resignGesture = UITapGestureRecognizer(target: self, action: #selector(resignAction))
         _resignGesture.delegate = self
         showView.addGestureRecognizer(_resignGesture)
     }
@@ -652,19 +659,19 @@ open class JRAlertController : UIViewController, UITableViewDelegate, UITableVie
         case .alert:
             _oldShowViewY = showView.y()
             // Registering for UITextField notification.
-            NotificationCenter.default.addObserver(self, selector: #selector(self.textFieldViewDidBeginEditing(_:)), name: NSNotification.Name.UITextFieldTextDidBeginEditing, object: nil)
-            NotificationCenter.default.addObserver(self, selector: #selector(self.textFieldViewDidEndEditing(_:)), name: NSNotification.Name.UITextFieldTextDidEndEditing, object: nil)
+            NotificationCenter.default.addObserver(self, selector: #selector(textFieldViewDidBeginEditing(_:)), name: NSNotification.Name.UITextFieldTextDidBeginEditing, object: nil)
+            NotificationCenter.default.addObserver(self, selector: #selector(textFieldViewDidEndEditing(_:)), name: NSNotification.Name.UITextFieldTextDidEndEditing, object: nil)
             // Registering for keyboard notification.
-            NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow(_:)),                name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-            NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardDidShow(_:)),                name: NSNotification.Name.UIKeyboardDidShow, object: nil)
-            NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide(_:)),                name: NSNotification.Name.UIKeyboardWillHide, object: nil)
-            NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardDidHide(_:)),                name: NSNotification.Name.UIKeyboardDidHide, object: nil)
+            NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)),                name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+            NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidShow(_:)),                name: NSNotification.Name.UIKeyboardDidShow, object: nil)
+            NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)),                name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+            NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidHide(_:)),                name: NSNotification.Name.UIKeyboardDidHide, object: nil)
             break
         }
         //  Registering for orientation changes notification
-        NotificationCenter.default.addObserver(self, selector: #selector(self.willChangeStatusBarOrientation(_:)),          name: NSNotification.Name.UIApplicationWillChangeStatusBarOrientation, object: UIApplication.shared)
+        NotificationCenter.default.addObserver(self, selector: #selector(willChangeStatusBarOrientation(_:)),          name: NSNotification.Name.UIApplicationWillChangeStatusBarOrientation, object: UIApplication.shared)
         //  Registering for status bar frame change notification
-        NotificationCenter.default.addObserver(self, selector: #selector(self.didChangeStatusBarFrame(_:)),          name: NSNotification.Name.UIApplicationDidChangeStatusBarFrame, object: UIApplication.shared)
+        NotificationCenter.default.addObserver(self, selector: #selector(didChangeStatusBarFrame(_:)),          name: NSNotification.Name.UIApplicationDidChangeStatusBarFrame, object: UIApplication.shared)
         // Registering for orientation notification.
         UIDevice.current.beginGeneratingDeviceOrientationNotifications()
         NotificationCenter.default.addObserver(self, selector: #selector(deviceOrientationDidChange(_:)), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
@@ -742,7 +749,7 @@ open class JRAlertController : UIViewController, UITableViewDelegate, UITableVie
                                 let index = textFields.index(of: textField)
                                 if let index = index {
                                     if self.tableView.isScrollEnabled {
-                                        self.tableView.scrollToRow(at: IndexPath.init(row: index, section: 0), at: .none, animated: false)
+                                        self.tableView.scrollToRow(at: IndexPath(row: index, section: 0), at: .none, animated: false)
                                     }
                                     // will call keyboardWillShow
                                     textField.becomeFirstResponder()
@@ -825,14 +832,14 @@ open class JRAlertController : UIViewController, UITableViewDelegate, UITableVie
         }
         let tableTop = topHeight
         
-        var actionsCount = self.actions.count
+        var actionsCount = actions.count
         if _haveAddCancel {
             actionsCount -= 1
         }
         switch preferredStyle {
         case .actionSheet:
             let tableHeight = Double(actionsCount)*JRAlertControllerCellRowHeight(byStyle: .action)
-            tableView.frame = CGRect.init(x: 0, y: tableTop, width: DeviceWidth(), height: tableHeight)
+            tableView.frame = CGRect(x: 0, y: tableTop, width: DeviceWidth(), height: tableHeight)
             break
         case .alert:
             var textFieldsCount = 0
@@ -840,7 +847,7 @@ open class JRAlertController : UIViewController, UITableViewDelegate, UITableVie
                 textFieldsCount = textFields.count
             }
             let tableHeight = Double(actionsCount)*JRAlertControllerCellRowHeight(byStyle: .action)+Double(textFieldsCount)*JRAlertControllerCellRowHeight(byStyle: .textField)
-            tableView.frame = CGRect.init(x: 0, y: tableTop, width: MAXWidth(), height: tableHeight)
+            tableView.frame = CGRect(x: 0, y: tableTop, width: MAXWidth(), height: tableHeight)
             break
         }
         let tableBottom = tableView.bottom()
@@ -887,16 +894,16 @@ open class JRAlertController : UIViewController, UITableViewDelegate, UITableVie
         
         switch preferredStyle {
         case .actionSheet:
-            showView.frame = CGRect.init(x: 0, y: DeviceHeight()-showViewHeight, width: DeviceWidth(), height: showViewHeight)
+            showView.frame = CGRect(x: 0, y: DeviceHeight()-showViewHeight, width: DeviceWidth(), height: showViewHeight)
             if UIApplication.shared.statusBarFrame.height == 40 {
                 // open HOTSPOT
-                self.showView.y(DeviceHeight()-self.showView.height()-20)
+                showView.y(DeviceHeight()-showView.height()-20)
             } else {
-                self.showView.y(DeviceHeight()-self.showView.height())
+                showView.y(DeviceHeight()-showView.height())
             }
             break
         case .alert:
-            showView.frame = CGRect.init(x: (DeviceWidth()-MAXWidth())/2, y: (DeviceHeight()-showViewHeight)/2, width: MAXWidth(), height: showViewHeight)
+            showView.frame = CGRect(x: (DeviceWidth()-MAXWidth())/2, y: (DeviceHeight()-showViewHeight)/2, width: MAXWidth(), height: showViewHeight)
             break
         }
         _oldShowViewY = showView.y()
@@ -925,7 +932,7 @@ open class JRAlertController : UIViewController, UITableViewDelegate, UITableVie
                     jr_dismiss()
                 } else {
                     if tableView.isScrollEnabled {
-                        tableView.scrollToRow(at: IndexPath.init(row: index+1, section: 0), at: .none, animated: true)
+                        tableView.scrollToRow(at: IndexPath(row: index+1, section: 0), at: .none, animated: true)
                     }
                     let tempTextField = textFields[index+1]
                     tempTextField.becomeFirstResponder()
@@ -1005,7 +1012,7 @@ open class JRAlertController : UIViewController, UITableViewDelegate, UITableVie
                 } else {
                     tableView.register(NSClassFromString("JRAlertControllerCell"), forCellReuseIdentifier: identifier)
                     cell = tableView.dequeueReusableCell(withIdentifier: identifier) as? JRAlertControllerCell
-                    cell = JRAlertControllerCell.init(style: style, action: action)
+                    cell = JRAlertControllerCell(style: style, action: action)
                 }
                 cell?.load(action: action, style2: preferredStyle)
             }
@@ -1013,9 +1020,9 @@ open class JRAlertController : UIViewController, UITableViewDelegate, UITableVie
         case .textField:
             if let textFields = _textFields {
                 let textField = textFields[row]
-                textField.frame = CGRect.init(x: 8, y: 6, width: MAXWidth()-16, height: JRAlertControllerCellRowHeight(byStyle: .textField)-12)
+                textField.frame = CGRect(x: 8, y: 6, width: MAXWidth()-16, height: JRAlertControllerCellRowHeight(byStyle: .textField)-12)
                 _textFields?[row] = textField
-                cell = JRAlertControllerCell.init(style: style, textField: textField)
+                cell = JRAlertControllerCell(style: style, textField: textField)
                 cell?.accessoryType = .none
                 cell?.selectionStyle = .none
             }
@@ -1112,10 +1119,10 @@ class JRAlertControllerCell : UITableViewCell {
         if let label = _jr_label {
             switch style2 {
             case .actionSheet:
-                _jr_label?.frame = CGRect.init(x: 0.0, y: 0.0, width: DeviceWidth(), height: jr_rowHeight)
+                _jr_label?.frame = CGRect(x: 0.0, y: 0.0, width: DeviceWidth(), height: jr_rowHeight)
                 break
             case .alert:
-                _jr_label?.frame = CGRect.init(x: 0.0, y: 0.0, width: MAXWidth(), height: jr_rowHeight)
+                _jr_label?.frame = CGRect(x: 0.0, y: 0.0, width: MAXWidth(), height: jr_rowHeight)
                 break
             }
             switch action.style {
@@ -1144,7 +1151,7 @@ class JRAlertControllerCell : UITableViewCell {
         contentView.backgroundColor = .white
         switch _jr_style {
         case .action:
-            _jr_label = UILabel.init()
+            _jr_label = UILabel()
             _jr_label!.textAlignment = .center
             contentView.addSubview(_jr_label!)
             break
@@ -1161,7 +1168,7 @@ class JRAlertControllerCell : UITableViewCell {
 
 /**************************** tools func -start ****************************/
 
-fileprivate func RGBA(r:Float, g:Float, b:Float, a:Float = 1) -> UIColor { return UIColor.init(colorLiteralRed: r/255.0, green: g/255.0, blue: b/255.0, alpha: a) }
+fileprivate func RGBA(r:Float, g:Float, b:Float, a:Float = 1) -> UIColor { return UIColor(colorLiteralRed: r/255.0, green: g/255.0, blue: b/255.0, alpha: a) }
 
 fileprivate func DeviceHeight() -> Double { return Double(UIScreen.main.bounds.size.height) }
 
@@ -1197,19 +1204,19 @@ fileprivate func JRAlertControllerCellReuseIdentifier(byStyle style: JRAlertCont
 extension UIView {
     
     func x() -> Double {
-        return Double(self.frame.origin.x)
+        return Double(frame.origin.x)
     }
     
     func y() -> Double {
-        return Double(self.frame.origin.y)
+        return Double(frame.origin.y)
     }
     
     func width() -> Double {
-        return Double(self.frame.size.width)
+        return Double(frame.size.width)
     }
     
     func height() -> Double {
-        return Double(self.frame.size.height)
+        return Double(frame.size.height)
     }
     
     func left() -> Double {
@@ -1229,71 +1236,71 @@ extension UIView {
     }
     
     func x(_ x: Double) {
-        self.frame = CGRect.init(x: x, y: self.y(), width: self.width(), height: self.height())
+        frame = CGRect(x: x, y: y(), width: width(), height: height())
     }
     
     func y(_ y: Double) {
-        self.frame = CGRect.init(x: self.x(), y: y, width: self.width(), height: self.height())
+        frame = CGRect(x: x(), y: y, width: width(), height: height())
     }
     
     func width(_ width: Double) {
-        self.frame = CGRect.init(x: self.x(), y: self.y(), width: width, height: self.height())
+        frame = CGRect(x: x(), y: y(), width: width, height: height())
     }
     
     func height(_ height: Double) {
-        self.frame = CGRect.init(x: self.x(), y: self.y(), width: self.width(), height: height)
+        frame = CGRect(x: x(), y: y(), width: width(), height: height)
     }
     
     func left(_ left: Double, keepWidth: Bool = true) {
         if !keepWidth {
-            let difference = self.x()-left
-            self.width(self.width()+difference)
+            let difference = x()-left
+            width(width()+difference)
         }
-        self.x(left)
+        x(left)
     }
     
     func right(_ right: Double, keepWidth: Bool = true) {
         if !keepWidth {
-            let difference = self.x()+self.width()-right
-            self.width(self.width()-difference)
+            let difference = x()+width()-right
+            width(width()-difference)
         }
-        self.x(right-self.width())
+        x(right-width())
     }
     
     func top(_ top: Double, keepHeight: Bool = true) {
         if !keepHeight {
-            let difference = self.y()-top
-            self.height(self.height()+difference)
+            let difference = y()-top
+            height(height()+difference)
         }
-        self.y(top)
+        y(top)
     }
     
     func bottom(_ bottom: Double, keepHeight: Bool = true) {
         if !keepHeight {
-            let difference = self.y()+self.height()-bottom
-            self.height(self.height()-difference)
+            let difference = y()+height()-bottom
+            height(height()-difference)
         }
-        self.y(bottom-self.height())
+        y(bottom-height())
     }
     
     func origin(_ origin: CGPoint) {
-        self.x(Double(origin.x))
-        self.y(Double(origin.y))
+        x(Double(origin.x))
+        y(Double(origin.y))
     }
     
     func size(_ size: CGSize) {
-        self.width(Double(size.width))
-        self.height(Double(size.height))
+        width(Double(size.width))
+        height(Double(size.height))
     }
     
     func center(_ center: CGPoint) {
-        self.origin(CGPoint.init(x: Double(center.x)-self.width()/2.0, y: Double(center.y)-self.height()/2.0))
+        origin(CGPoint(x: Double(center.x)-width()/2.0, y: Double(center.y)-height()/2.0))
     }
 
     func fixBlackLine() {
         let width = Double(Int(self.width()+1))
         let height = Double(Int(self.height()+1))
-        size(CGSize.init(width: width, height: height))
+        size(CGSize(width: width, height: height))
     }
 
 }
@@ -1309,10 +1316,10 @@ extension String {
      - returns: The height.
      */
     func height(withStringAttributes attributes : [String : AnyObject], fixedWidth : Double) -> Double {
-        guard self.characters.count > 0 && fixedWidth > 0 else {
+        guard characters.count > 0 && fixedWidth > 0 else {
             return 0
         }
-        let size = CGSize.init(width: fixedWidth, height: Double.greatestFiniteMagnitude)
+        let size = CGSize(width: fixedWidth, height: Double.greatestFiniteMagnitude)
         let text = self as NSString
         let rect = text.boundingRect(with: size, options:.usesLineFragmentOrigin, attributes: attributes, context:nil)
         return Double(rect.size.height)
@@ -1327,10 +1334,10 @@ extension String {
      - returns: The height.
      */
     func height(withFont font : UIFont = UIFont.systemFont(ofSize: 16), fixedWidth : Double) -> Double {
-        guard self.characters.count > 0 && fixedWidth > 0 else {
+        guard characters.count > 0 && fixedWidth > 0 else {
             return 0
         }
-        let size = CGSize.init(width: fixedWidth, height: Double.greatestFiniteMagnitude)
+        let size = CGSize(width: fixedWidth, height: Double.greatestFiniteMagnitude)
         let text = self as NSString
         let rect = text.boundingRect(with: size, options:.usesLineFragmentOrigin, attributes: [NSFontAttributeName : font], context:nil)
         return Double(rect.size.height)
@@ -1344,10 +1351,10 @@ extension String {
      - returns: The width.
      */
     func width(withStringAttributes attributes : [String : AnyObject]) -> Double {
-        guard self.characters.count > 0 else {
+        guard characters.count > 0 else {
             return 0
         }
-        let size = CGSize.init(width: Double.greatestFiniteMagnitude, height: 0)
+        let size = CGSize(width: Double.greatestFiniteMagnitude, height: 0)
         let text = self as NSString
         let rect = text.boundingRect(with: size, options:.usesLineFragmentOrigin, attributes: attributes, context:nil)
         return Double(rect.size.width)
@@ -1361,10 +1368,10 @@ extension String {
      - returns: The string's width.
      */
     func width(withFont font : UIFont = UIFont.systemFont(ofSize: 16)) -> Double {
-        guard self.characters.count > 0 else {
+        guard characters.count > 0 else {
             return 0
         }
-        let size = CGSize.init(width: Double.greatestFiniteMagnitude, height: 0)
+        let size = CGSize(width: Double.greatestFiniteMagnitude, height: 0)
         let text = self as NSString
         let rect = text.boundingRect(with: size, options:.usesLineFragmentOrigin, attributes: [NSFontAttributeName : font], context:nil)
         return Double(rect.size.width)

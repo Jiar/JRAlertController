@@ -11,19 +11,21 @@ import UIKit
 
 class ViewController: UIViewController {
 
+    var alertSimple: JRAlertController!
+    var alertMultiple: JRAlertController!
+    var sheetSimple: JRAlertController!
+    var sheetMultiple: JRAlertController!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        initAlertSimple()
+        initAlertMultiple()
+        initSheetSimple()
+        initSheetMultiple()
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
-
     
-    /******************** JRAlertController -start ********************/
-    
-    @IBAction func alertSimple(_ sender: Any) {
-        let alertController = JRAlertController(title: "login tip", message: "please input account and password", preferredStyle: .alert)
+    private func initAlertSimple() {
+        alertSimple = JRAlertController(title: "login tip", message: "please input account and password", preferredStyle: .alert)
         let cancelAction = JRAlertAction(title: "cancel", style: .cancel, handler:  {
             (action: JRAlertAction!) -> Void in
             print("cancel")
@@ -32,22 +34,21 @@ class ViewController: UIViewController {
             (action: JRAlertAction!) -> Void in
             print("login")
         })
-        alertController.addAction(cancelAction)
-        alertController.addAction(loginAction)
-        alertController.addTextField(configurationHandler: { (textField: UITextField) -> Void in
+        alertSimple.addAction(cancelAction)
+        alertSimple.addAction(loginAction)
+        alertSimple.addTextField(configurationHandler: { (textField: UITextField) -> Void in
             textField.keyboardType = .default
             textField.placeholder = "please input account"
         })
-        alertController.addTextField(configurationHandler: { (textField: UITextField) -> Void in
+        alertSimple.addTextField(configurationHandler: { (textField: UITextField) -> Void in
             textField.keyboardType = .default
             textField.isSecureTextEntry = true
             textField.placeholder = "please input password"
         })
-        alertController.jr_show(onRootView: self)
     }
-
-    @IBAction func alertMultiple(_ sender: Any) {
-        let alertController = JRAlertController(title: "I am title,I am title,I am title,I am title,I am title", message: "I am message, I am message, I am message, I am message, I am message, I am message, I am message, I am message, I am message", preferredStyle: .alert)
+    
+    private func initAlertMultiple() {
+        alertMultiple = JRAlertController(title: "I am title,I am title,I am title,I am title,I am title", message: "I am message, I am message, I am message, I am message, I am message, I am message, I am message, I am message, I am message", preferredStyle: .alert)
         let cancelAction = JRAlertAction(title: "cancel", style: .cancel, handler:  {
             (action: JRAlertAction!) -> Void in
             print("cancel")
@@ -84,81 +85,80 @@ class ViewController: UIViewController {
             (action: JRAlertAction!) -> Void in
             print("archive6")
         })
-        alertController.addAction(cancelAction)
-        alertController.addAction(deleteAction)
-        alertController.addAction(archiveAction)
-        alertController.addTextField(configurationHandler: { (textField: UITextField) -> Void in
+        alertMultiple.addAction(cancelAction)
+        alertMultiple.addAction(deleteAction)
+        alertMultiple.addAction(archiveAction)
+        alertMultiple.addTextField(configurationHandler: { (textField: UITextField) -> Void in
             textField.textColor = .black
             textField.text = "black"
         })
-        alertController.addTextField(configurationHandler: { (textField: UITextField) -> Void in
+        alertMultiple.addTextField(configurationHandler: { (textField: UITextField) -> Void in
             textField.textColor = .darkGray
             textField.text = "darkGray"
         })
-        alertController.addTextField(configurationHandler: { (textField: UITextField) -> Void in
+        alertMultiple.addTextField(configurationHandler: { (textField: UITextField) -> Void in
             textField.textColor = .lightGray
             textField.text = "lightGray"
         })
-        alertController.addTextField(configurationHandler: { (textField: UITextField) -> Void in
+        alertMultiple.addTextField(configurationHandler: { (textField: UITextField) -> Void in
             textField.backgroundColor = .black
             textField.textColor = .white
             textField.text = "white"
         })
-        alertController.addTextField(configurationHandler: { (textField: UITextField) -> Void in
+        alertMultiple.addTextField(configurationHandler: { (textField: UITextField) -> Void in
             textField.textColor = .gray
             textField.text = "gray"
         })
-        alertController.addTextField(configurationHandler: { (textField: UITextField) -> Void in
+        alertMultiple.addTextField(configurationHandler: { (textField: UITextField) -> Void in
             textField.textColor = .red
             textField.text = "red"
         })
-        alertController.addAction(archiveAction1)
-        alertController.addAction(archiveAction2)
-        alertController.addTextField(configurationHandler: { (textField: UITextField) -> Void in
+        alertMultiple.addAction(archiveAction1)
+        alertMultiple.addAction(archiveAction2)
+        alertMultiple.addTextField(configurationHandler: { (textField: UITextField) -> Void in
             textField.textColor = .green
             textField.text = "green"
         })
-        alertController.addTextField(configurationHandler: { (textField: UITextField) -> Void in
+        alertMultiple.addTextField(configurationHandler: { (textField: UITextField) -> Void in
             textField.textColor = .blue
             textField.text = "blue"
         })
-        alertController.addTextField(configurationHandler: { (textField: UITextField) -> Void in
+        alertMultiple.addTextField(configurationHandler: { (textField: UITextField) -> Void in
             textField.textColor = .cyan
             textField.text = "cyan"
         })
-        alertController.addTextField(configurationHandler: { (textField: UITextField) -> Void in
+        alertMultiple.addTextField(configurationHandler: { (textField: UITextField) -> Void in
             textField.textColor = .yellow
             textField.text = "yellow"
         })
-        alertController.addTextField(configurationHandler: { (textField: UITextField) -> Void in
+        alertMultiple.addTextField(configurationHandler: { (textField: UITextField) -> Void in
             textField.textColor = .magenta
             textField.text = "magenta"
         })
-        alertController.addTextField(configurationHandler: { (textField: UITextField) -> Void in
+        alertMultiple.addTextField(configurationHandler: { (textField: UITextField) -> Void in
             textField.textColor = .orange
             textField.text = "orange"
         })
-        alertController.addTextField(configurationHandler: { (textField: UITextField) -> Void in
+        alertMultiple.addTextField(configurationHandler: { (textField: UITextField) -> Void in
             textField.textColor = .purple
             textField.text = "purple"
         })
-        alertController.addTextField(configurationHandler: { (textField: UITextField) -> Void in
+        alertMultiple.addTextField(configurationHandler: { (textField: UITextField) -> Void in
             textField.textColor = .brown
             textField.text = "brown"
         })
-        alertController.addAction(archiveAction3)
-        alertController.addAction(archiveAction4)
-        alertController.addAction(archiveAction5)
-        alertController.addAction(archiveAction6)
-        alertController.preferredAction  = archiveAction6
-        alertController.jr_show(onRootView: self)
+        alertMultiple.addAction(archiveAction3)
+        alertMultiple.addAction(archiveAction4)
+        alertMultiple.addAction(archiveAction5)
+        alertMultiple.addAction(archiveAction6)
+        alertMultiple.preferredAction  = archiveAction6
     }
     
-    @IBAction func sheetSimple(_ sender: Any) {
-        let alertController = JRAlertController(title: "blog tip", message: "Please select the option to use the corresponding option to operate your blog", preferredStyle: .actionSheet)
-//        let alertController = JRAlertController(title: "blog tip")
-//        let alertController = JRAlertController(message: "Please select the option to use the corresponding option to operate your blog")
-//        let alertController = JRAlertController()
+    private func initSheetSimple() {
+        sheetSimple = JRAlertController(title: "blog tip", message: "Please select the option to use the corresponding option to operate your blog", preferredStyle: .actionSheet)
+//        sheetSimple = JRAlertController(title: "blog tip")
+//        sheetSimple = JRAlertController(message: "Please select the option to use the corresponding option to operate your blog")
+//        sheetSimple = JRAlertController()
         let addAction = JRAlertAction(title: "add", style: .default, handler: {
             (action: JRAlertAction!) -> Void in
             print("add blog")
@@ -175,15 +175,14 @@ class ViewController: UIViewController {
             (action: JRAlertAction!) -> Void in
             print("cancel")
         })
-        alertController.addAction(addAction)
-        alertController.addAction(modifyAction)
-        alertController.addAction(deleteAction)
-        alertController.addAction(cancelAction)
-        alertController.jr_show(onRootView: self)
+        sheetSimple.addAction(addAction)
+        sheetSimple.addAction(modifyAction)
+        sheetSimple.addAction(deleteAction)
+        sheetSimple.addAction(cancelAction)
     }
     
-    @IBAction func sheetMultiple(_ sender: Any) {
-        let alertController = JRAlertController(title: "I am title,I am title,I am title,I am title,I am title", message: "I am message, I am message, I am message, I am message, I am message, I am message, I am message, I am message, I am message", preferredStyle: .actionSheet)
+    private func initSheetMultiple() {
+        sheetMultiple = JRAlertController(title: "I am title,I am title,I am title,I am title,I am title", message: "I am message, I am message, I am message, I am message, I am message, I am message, I am message, I am message, I am message", preferredStyle: .actionSheet)
         let cancelAction = JRAlertAction(title: "cancel", style: .cancel, handler: nil)
         let deleteAction = JRAlertAction(title: "delete", style: .destructive, handler: nil)
         let archiveAction = JRAlertAction(title: "archive", style: .default, handler: {
@@ -214,16 +213,33 @@ class ViewController: UIViewController {
             (action: JRAlertAction!) -> Void in
             print("archive6")
         })
-        alertController.addAction(cancelAction)
-        alertController.addAction(deleteAction)
-        alertController.addAction(archiveAction)
-        alertController.addAction(archiveAction1)
-        alertController.addAction(archiveAction2)
-        alertController.addAction(archiveAction3)
-        alertController.addAction(archiveAction4)
-        alertController.addAction(archiveAction5)
-        alertController.addAction(archiveAction6)
-        alertController.jr_show(onRootView: self)
+        sheetMultiple.addAction(cancelAction)
+        sheetMultiple.addAction(deleteAction)
+        sheetMultiple.addAction(archiveAction)
+        sheetMultiple.addAction(archiveAction1)
+        sheetMultiple.addAction(archiveAction2)
+        sheetMultiple.addAction(archiveAction3)
+        sheetMultiple.addAction(archiveAction4)
+        sheetMultiple.addAction(archiveAction5)
+        sheetMultiple.addAction(archiveAction6)
+    }
+    
+    /******************** JRAlertController -start ********************/
+    
+    @IBAction func alertSimple(_ sender: Any) {
+        alertSimple.jr_show(onRootView: self)
+    }
+
+    @IBAction func alertMultiple(_ sender: Any) {
+        alertMultiple.jr_show(onRootView: self)
+    }
+    
+    @IBAction func sheetSimple(_ sender: Any) {
+        sheetSimple.jr_show(onRootView: self)
+    }
+    
+    @IBAction func sheetMultiple(_ sender: Any) {
+        sheetMultiple.jr_show(onRootView: self)
     }
     
     /******************** JRAlertController -end ********************/
