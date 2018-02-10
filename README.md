@@ -1,40 +1,40 @@
 # JRAlertController
 Based on Apple's UIAlertController control API, rebuilt it with swift, JRAlertController is more in line with mainstream style of the APP.
 
-![JRAlertController](https://raw.githubusercontent.com/Jiar/JRAlertController/master/JR_Show.png)
+<img src="https://raw.githubusercontent.com/Jiar/JRAlertController/master/JR_Show.png" alt="JRAlertController" title="JRAlertController"/>
 
 ## Screenshot
 
 ### JRAlertController
 
 ##### JRAlertController_Main
-![JRAlertController_alert_simple](https://raw.githubusercontent.com/Jiar/JRAlertController/master/Screenshot/JRAlertController_Main.gif)
+<img src="https://raw.githubusercontent.com/Jiar/JRAlertController/master/Screenshot/JRAlertController_Main.gif" alt="JRAlertController_Main" title="JRAlertController_Main"/>
 
 ##### JRAlertController_alert_simple
-![JRAlertController_alert_simple](https://raw.githubusercontent.com/Jiar/JRAlertController/master/Screenshot/JRAlertController_alert_simple.gif)
+<img src="https://raw.githubusercontent.com/Jiar/JRAlertController/master/Screenshot/JRAlertController_alert_simple.gif" alt="JRAlertController_alert_simple" title="JRAlertController_alert_simple"/>
 
 ##### JRAlertController_alert_multiple
-![JRAlertController_alert_multiple](https://raw.githubusercontent.com/Jiar/JRAlertController/master/Screenshot/JRAlertController_alert_multiple.gif)
+<img src="https://raw.githubusercontent.com/Jiar/JRAlertController/master/Screenshot/JRAlertController_alert_multiple.gif" alt="JRAlertController_alert_multiple" title="JRAlertController_alert_multiple"/>
 
 ##### JRAlertController_sheet_simple
-![JRAlertController_sheet_simple](https://raw.githubusercontent.com/Jiar/JRAlertController/master/Screenshot/JRAlertController_sheet_simple.gif)
+<img src="https://raw.githubusercontent.com/Jiar/JRAlertController/master/Screenshot/JRAlertController_sheet_simple.gif" alt="JRAlertController_sheet_simple" title="JRAlertController_sheet_simple"/>
 
 ##### JRAlertController_sheet_multiple
-![JRAlertController_sheet_multiple](https://raw.githubusercontent.com/Jiar/JRAlertController/master/Screenshot/JRAlertController_sheet_multiple.gif)
+<img src="https://raw.githubusercontent.com/Jiar/JRAlertController/master/Screenshot/JRAlertController_sheet_multiple.gif" alt="JRAlertController_sheet_multiple" title="JRAlertController_sheet_multiple"/>
 
 ### UIAlertController
 
 ##### UIAlertController_alert_simple
-![UIAlertController_alert_simple](https://raw.githubusercontent.com/Jiar/JRAlertController/master/Screenshot/UIAlertController_alert_simple.gif)
+<img src="https://raw.githubusercontent.com/Jiar/JRAlertController/master/Screenshot/UIAlertController_alert_simple.gif" alt="UIAlertController_alert_simple" title="UIAlertController_alert_simple"/>
 
 ##### UIAlertController_alert_multiple
-![UIAlertController_alert_multiple](https://raw.githubusercontent.com/Jiar/JRAlertController/master/Screenshot/UIAlertController_alert_multiple.gif)
+<img src="https://raw.githubusercontent.com/Jiar/JRAlertController/master/Screenshot/UIAlertController_alert_multiple.gif" alt="UIAlertController_alert_multiple" title="UIAlertController_alert_multiple"/>
 
 ##### UIAlertController_sheet_simple
-![UIAlertController_sheet_simple](https://raw.githubusercontent.com/Jiar/JRAlertController/master/Screenshot/UIAlertController_sheet_simple.gif)
+<img src="https://raw.githubusercontent.com/Jiar/JRAlertController/master/Screenshot/UIAlertController_sheet_simple.gif" alt="UIAlertController_sheet_simple" title="UIAlertController_sheet_simple"/>
 
 ##### UIAlertController_sheet_multiple
-![UIAlertController_sheet_multiple](https://raw.githubusercontent.com/Jiar/JRAlertController/master/Screenshot/UIAlertController_sheet_multiple.gif)
+<img src="https://raw.githubusercontent.com/Jiar/JRAlertController/master/Screenshot/UIAlertController_sheet_multiple.gif" alt="UIAlertController_sheet_multiple" title="UIAlertController_sheet_multiple"/>
 
 
 ## Requirements
@@ -82,7 +82,8 @@ If you prefer not to use either of the aforementioned dependency managers, you c
 - Open up Terminal, `cd` into your top-level project directory, and run the following command "if" your project is not initialized as a git repository:
 
   ```bash
-$ git init
+  $ git init
+  ```
 ```
 
 - Add JRAlertController as a git [submodule](http://git-scm.com/docs/git-submodule) by running the following command:
