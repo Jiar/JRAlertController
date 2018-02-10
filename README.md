@@ -1,40 +1,60 @@
 # JRAlertController
 Based on Apple's UIAlertController control API, rebuilt it with swift, JRAlertController is more in line with mainstream style of the APP.
 
+<p align="center">
 <img src="https://raw.githubusercontent.com/Jiar/JRAlertController/master/JR_Show.png" alt="JRAlertController" title="JRAlertController"/>
+</p>
 
 ## Screenshot
 
 ### JRAlertController
 
 ##### JRAlertController_Main
+<p align="center">
 <img src="https://raw.githubusercontent.com/Jiar/JRAlertController/master/Screenshot/JRAlertController_Main.gif" alt="JRAlertController_Main" title="JRAlertController_Main"/>
+</p>
 
 ##### JRAlertController_alert_simple
+<p align="center">
 <img src="https://raw.githubusercontent.com/Jiar/JRAlertController/master/Screenshot/JRAlertController_alert_simple.gif" alt="JRAlertController_alert_simple" title="JRAlertController_alert_simple"/>
+</p>
 
 ##### JRAlertController_alert_multiple
+<p align="center">
 <img src="https://raw.githubusercontent.com/Jiar/JRAlertController/master/Screenshot/JRAlertController_alert_multiple.gif" alt="JRAlertController_alert_multiple" title="JRAlertController_alert_multiple"/>
+</p>
 
 ##### JRAlertController_sheet_simple
+<p align="center">
 <img src="https://raw.githubusercontent.com/Jiar/JRAlertController/master/Screenshot/JRAlertController_sheet_simple.gif" alt="JRAlertController_sheet_simple" title="JRAlertController_sheet_simple"/>
+</p>
 
 ##### JRAlertController_sheet_multiple
+<p align="center">
 <img src="https://raw.githubusercontent.com/Jiar/JRAlertController/master/Screenshot/JRAlertController_sheet_multiple.gif" alt="JRAlertController_sheet_multiple" title="JRAlertController_sheet_multiple"/>
+</p>
 
 ### UIAlertController
 
 ##### UIAlertController_alert_simple
+<p align="center">
 <img src="https://raw.githubusercontent.com/Jiar/JRAlertController/master/Screenshot/UIAlertController_alert_simple.gif" alt="UIAlertController_alert_simple" title="UIAlertController_alert_simple"/>
+</p>
 
 ##### UIAlertController_alert_multiple
+<p align="center">
 <img src="https://raw.githubusercontent.com/Jiar/JRAlertController/master/Screenshot/UIAlertController_alert_multiple.gif" alt="UIAlertController_alert_multiple" title="UIAlertController_alert_multiple"/>
+</p>
 
 ##### UIAlertController_sheet_simple
+<p align="center">
 <img src="https://raw.githubusercontent.com/Jiar/JRAlertController/master/Screenshot/UIAlertController_sheet_simple.gif" alt="UIAlertController_sheet_simple" title="UIAlertController_sheet_simple"/>
+</p>
 
 ##### UIAlertController_sheet_multiple
+<p align="center">
 <img src="https://raw.githubusercontent.com/Jiar/JRAlertController/master/Screenshot/UIAlertController_sheet_multiple.gif" alt="UIAlertController_sheet_multiple" title="UIAlertController_sheet_multiple"/>
+</p>
 
 
 ## Requirements
