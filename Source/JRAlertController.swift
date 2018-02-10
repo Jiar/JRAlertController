@@ -11,23 +11,19 @@ import UIKit
 
 /// Styles to apply to action buttons in an alert.
 public enum JRAlertActionStyle: Int {
-    
     case `default`
     case cancel
     case destructive
-    
 }
 
 /// Constants indicating the type of alert to display.
 public enum JRAlertControllerStyle: Int {
-    
     case actionSheet
     case alert
-    
 }
 
 /// A JRAlertAction object represents an action that can be taken when tapping a button in an alert. You use this class to configure information about a single action, including the title to display in the button, any styling information, and a handler to execute when the user taps the button. After creating an alert action object, add it to a JRAlertController object before displaying the corresponding alert to the user.
-public class JRAlertAction : NSObject, NSCopying {
+public class JRAlertAction: NSObject, NSCopying {
     
     private var _title: String?
     private var _style: JRAlertActionStyle = .default
@@ -71,10 +67,6 @@ public class JRAlertAction : NSObject, NSCopying {
         }
     }
     
-    /// A Boolean value indicating whether the action is currently enabled.
-    /// The default value of this property is true. Changing the value to false causes the action to appear dimmed in the resulting alert. When an action is disabled, taps on the corresponding button have no effect.
-    public var isEnabled: Bool = true
-    
     public func copy(with zone: NSZone? = nil) -> Any {
         let title = _title
         let style = _style
@@ -109,10 +101,10 @@ public class JRAlertAction : NSObject, NSCopying {
 /// alertController.addAction(addAction)
 /// alertController.addAction(deleteAction)
 /// alertController.addAction(cancelAction)
-/// alertController.jr_show(onRootView: self)
+/// present(alertController, animated: true, completion: nil)
 /// ```
 /// When configuring an alert with the alert style, you can also add text fields to the alert interface. The alert controller lets you provide a block for configuring your text fields prior to display. The alert controller maintains a reference to each text field so that you can access its value later.
-public class JRAlertController : UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIGestureRecognizerDelegate {
+public class JRAlertController: UIViewController {
     
     /**************************** open api -start ****************************/
     
@@ -134,6 +126,7 @@ public class JRAlertController : UIViewController, UITableViewDelegate, UITableV
     public init(title: String? = nil, message: String? = nil, preferredStyle: JRAlertControllerStyle = .actionSheet) {
         super.init(nibName: nil, bundle: nil)
         modalPresentationStyle = .overCurrentContext
+        transitioningDelegate = self
         _title = title
         _message = message
         _preferredStyle = preferredStyle
@@ -145,9 +138,7 @@ public class JRAlertController : UIViewController, UITableViewDelegate, UITableV
     /// The action object to display as part of the alert. Actions are displayed as buttons in the alert. The action object provides the button text and the action to be performed when that button is tapped.
     public func addAction(_ action: JRAlertAction) {
         assert(_haveAddCancel == false || action.style != .cancel, "Have added action that the style is cancel")
-        if let _ = _actions {
-            
-        } else {
+        if _actions == nil {
             _actions = []
         }
         if action.style == .cancel {
@@ -163,11 +154,7 @@ public class JRAlertController : UIViewController, UITableViewDelegate, UITableV
     /// The actions are in the order in which you added them to the alert controller. This order also corresponds to the order in which they are displayed in the alert or action sheet. The second action in the array is displayed below the first, the third is displayed below the second, and so on.
     public var actions: [JRAlertAction] {
         get {
-            if let actions = _actions {
-                return actions
-            } else {
-                return []
-            }
+            return _actions ?? []
         }
     }
     
@@ -182,16 +169,12 @@ public class JRAlertController : UIViewController, UITableViewDelegate, UITableV
         set {
             assert(_preferredStyle == .alert, "The 'preferredStyle' property must be alert.")
             _preferredAction = newValue
-            if let actions = _actions {
-                if let newValue = newValue {
-                    let index = actions.index(of: newValue)
-                    if let index = index {
-                        let action = actions[index]
-                        action._isPreferredAction = true
-                        _actions?[index] = action
-                    }
-                }
+            guard let actions = _actions, let newValue = newValue, let index = actions.index(of: newValue) else {
+                return
             }
+            let action = actions[index]
+            action._isPreferredAction = true
+            _actions?[index] = action
         }
         get {
             return _preferredAction
@@ -207,9 +190,7 @@ public class JRAlertController : UIViewController, UITableViewDelegate, UITableV
     /// - Parameter configurationHandler: A block for configuring the text field prior to displaying the alert. This block has no return value and takes a single parameter corresponding to the text field object. Use that parameter to change the text field properties.
     public func addTextField(configurationHandler: ((UITextField) -> Swift.Void)? = nil) {
         assert(_preferredStyle == .alert, "The 'preferredStyle' property must be alert.")
-        if let _ = _textFields {
-            
-        } else {
+        if _textFields == nil {
             _textFields = []
         }
         let textField = UITextField()
@@ -273,16 +254,6 @@ public class JRAlertController : UIViewController, UITableViewDelegate, UITableV
         }
     }
     
-    /// Use this function to show the ViewController
-    public func jr_show(onRootView rootView:UIViewController) {
-        rootView.present(self, animated: false, completion: nil)
-    }
-    
-    /// Use this function to dismiss the ViewController
-    public func jr_dismiss() {
-        dismiss(animated: false, completion: nil)
-    }
-    
     /**************************** open api -end ****************************/
     
     
@@ -318,11 +289,11 @@ public class JRAlertController : UIViewController, UITableViewDelegate, UITableV
     
     /**************************** achieve func -start ****************************/
     
-    private let DivideHeight:CGFloat = 4
-    private let tableView:UITableView = UITableView(frame: CGRect.zero, style: .grouped)
-    private let showView:UIView = UIView()
-    private var titleLable:UILabel?
-    private var messageLabel:UILabel?
+    private let DivideHeight: CGFloat = 4
+    private let tableView: UITableView = UITableView(frame: CGRect.zero, style: .grouped)
+    private let showView: UIView = UIView()
+    private var titleLable: UILabel?
+    private var messageLabel: UILabel?
     private var cutLine: UIView?
     private var cancelbtn: UIButton?
     
@@ -338,8 +309,7 @@ public class JRAlertController : UIViewController, UITableViewDelegate, UITableV
     public override func viewDidLoad() {
         super.viewDidLoad()
         initShowView()
-        initCancelGesture()
-        initResignGesture()
+        initGestures()
         initRegistering()
     }
     
@@ -349,14 +319,17 @@ public class JRAlertController : UIViewController, UITableViewDelegate, UITableV
         let showViewHeight = initBottom(tableBottom)
         switch preferredStyle {
         case .actionSheet:
-            showView.frame = CGRect(x: 0, y: DeviceHeight()-showViewHeight, width: DeviceWidth(), height: showViewHeight)
-            break
+            if #available(iOS 11.0, *) {
+                showView.frame = CGRect(x: 0, y: view.bounds.height-view.safeAreaInsets.bottom-showViewHeight, width: view.bounds.width, height: showViewHeight)
+            } else {
+                showView.frame = CGRect(x: 0, y: view.bounds.height-bottomLayoutGuide.length-showViewHeight, width: view.bounds.width, height: showViewHeight)
+            }
         case .alert:
             showView.frame = CGRect(x: (DeviceWidth()-MAXWidth())/2, y: (DeviceHeight()-showViewHeight)/2, width: MAXWidth(), height: showViewHeight)
             showView.layer.masksToBounds = true
-            break
         }
         showView.backgroundColor = .white
+        showState()
         view.addSubview(showView)
     }
     
@@ -368,10 +341,8 @@ public class JRAlertController : UIViewController, UITableViewDelegate, UITableV
             switch preferredStyle {
             case .actionSheet:
                 titleLable = UILabel(frame: CGRect(x: 0, y: 0, width: DeviceWidth(), height: 44))
-                break
             case .alert:
                 titleLable = UILabel(frame: CGRect(x: 0, y: 0, width: MAXWidth(), height: 44))
-                break
             }
             titleLable!.backgroundColor = .white
             titleLable!.font = UIFont.boldSystemFont(ofSize: 15)
@@ -388,10 +359,8 @@ public class JRAlertController : UIViewController, UITableViewDelegate, UITableV
             switch preferredStyle {
             case .actionSheet:
                 width = DeviceWidth()
-                break
             case .alert:
                 width = MAXWidth()
-                break
             }
             var messageLabelHeight = message.height(withFont: font, fixedWidth: width)
             if messageLabelHeight > MAXHeight()/8 {
@@ -433,7 +402,6 @@ public class JRAlertController : UIViewController, UITableViewDelegate, UITableV
         case .actionSheet:
             let tableHeight = CGFloat(actionsCount)*JRAlertControllerCellRowHeight(byStyle: .action)
             tableView.frame = CGRect(x: 0, y: y, width: DeviceWidth(), height: tableHeight)
-            break
         case .alert:
             var textFieldsCount = 0
             if let textFields = _textFields {
@@ -441,7 +409,6 @@ public class JRAlertController : UIViewController, UITableViewDelegate, UITableV
             }
             let tableHeight = CGFloat(actionsCount)*JRAlertControllerCellRowHeight(byStyle: .action)+CGFloat(textFieldsCount)*JRAlertControllerCellRowHeight(byStyle: .textField)
             tableView.frame = CGRect(x: 0, y: y, width: MAXWidth(), height: tableHeight)
-            break
         }
         tableView.backgroundColor = .white
         let null = UIView(frame: CGRect(x: 0, y: 0, width: DeviceWidth(), height: 0.01))
@@ -459,20 +426,16 @@ public class JRAlertController : UIViewController, UITableViewDelegate, UITableV
             switch preferredStyle {
             case .actionSheet:
                 cutLine = UIView(frame: CGRect(x: 0, y: y, width: DeviceWidth(), height: 6))
-                break
             case .alert:
                 cutLine = UIView(frame: CGRect(x: 0, y: y, width: MAXWidth(), height: 6))
-                break
             }
             cutLine!.backgroundColor = RGBA(r: 240, g: 240, b: 240)
             showView.addSubview(cutLine!)
             switch preferredStyle {
             case .actionSheet:
                 cancelbtn = UIButton(frame: CGRect(x: 0, y: cutLine!.bottom(), width: DeviceWidth(), height: JRAlertControllerCellRowHeight(byStyle: .action)))
-                break
             case .alert:
                 cancelbtn = UIButton(frame: CGRect(x: 0, y: cutLine!.bottom(), width: MAXWidth(), height: JRAlertControllerCellRowHeight(byStyle: .action)))
-                break
             }
             cancelbtn!.backgroundColor = .white
             cancelbtn!.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
@@ -503,92 +466,10 @@ public class JRAlertController : UIViewController, UITableViewDelegate, UITableV
         return showViewHeight
     }
     
-    internal func highlightedAction() {
-        cancelbtn?.backgroundColor = RGBA(r: 217, g: 217, b: 217)
-    }
-    
-    internal func normalAction() {
-        cancelbtn?.backgroundColor = .white
-    }
-    
-    internal func cancelAction() {
-        cancelbtn?.backgroundColor = .white
-        if let action = _cancelAction {
-            if let handler = action._handler {
-                handler(action)
-            }
-        }
-        loadDisappearAnimation()
-    }
-
-    public override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        loadAppearAnimation()
-    }
-    
-    private func initFirstResponder() {
-        if preferredStyle == .alert {
-            if let textFields = _textFields {
-                if textFields.count > 0 {
-                    textFields[0].becomeFirstResponder()
-                }
-            }
-        }
-    }
-    
-    private func loadAppearAnimation() {
-        switch preferredStyle {
-        case .actionSheet:
-            view.backgroundColor = RGBA(r: 255, g: 255, b: 255, a: 0)
-            showView.y(DeviceHeight())
-            UIView.animate(withDuration: 0.3, animations: {
-                self.view.backgroundColor = RGBA(r: 0, g: 0, b: 0, a: 0.4)
-                if UIApplication.shared.statusBarFrame.height == 40 {
-                    // open HOTSPOT
-                    self.showView.y(DeviceHeight()-self.showView.height()-20)
-                } else {
-                    self.showView.y(DeviceHeight()-self.showView.height())
-                }
-            })
-            break
-        case .alert:
-            view.backgroundColor = RGBA(r: 255, g: 255, b: 255, a: 0)
-            showView.alpha = 0
-            UIView.animate(withDuration: 0.3, animations: { 
-                self.view.backgroundColor = RGBA(r: 0, g: 0, b: 0, a: 0.4)
-                self.showView.alpha = 1
-                self.initFirstResponder()
-            })
-            break
-        }
-    }
-    
-    private func loadDisappearAnimation() {
-        switch preferredStyle {
-        case .actionSheet:
-            view.backgroundColor = RGBA(r: 0, g: 0, b: 0, a: 0.4)
-            UIView.animate(withDuration: 0.3, animations: {
-                self.view.backgroundColor = RGBA(r: 255, g: 255, b: 255, a: 0)
-                self.showView.y(DeviceHeight())
-            }, completion: { (finish) in
-                if finish {
-                    self.jr_dismiss()
-                }
-            })
-            break
-        case .alert:
-            view.backgroundColor = RGBA(r: 0, g: 0, b: 0, a: 0.4)
-            showView.alpha = 1
-            UIView.animate(withDuration: 0.3, animations: {
-                self.showView.alpha = 0
-                self.view.backgroundColor = RGBA(r: 255, g: 255, b: 255, a: 0)
-            }, completion: { (finish) in
-                if finish {
-                    self.jr_dismiss()
-                }
-            })
-            break
-        }
+    private func initGestures() {
+        initCancelGesture()
+        initResignGesture()
+        _cancelGesture.require(toFail: _resignGesture)
     }
     
     private func initCancelGesture() {
@@ -602,27 +483,225 @@ public class JRAlertController : UIViewController, UITableViewDelegate, UITableV
         _resignGesture.delegate = self
         showView.addGestureRecognizer(_resignGesture)
     }
-        
-    internal func resignAction() {
+    
+    private func initFirstResponder() {
+        if preferredStyle == .alert {
+            guard let textFields = _textFields else {
+                return
+            }
+            textFields.first?.becomeFirstResponder()
+        }
+    }
+    
+    @objc private func highlightedAction() {
+        cancelbtn?.backgroundColor = RGBA(r: 217, g: 217, b: 217)
+    }
+    
+    @objc private func normalAction() {
+        cancelbtn?.backgroundColor = .white
+    }
+    
+    @objc private func cancelAction() {
+        cancelbtn?.backgroundColor = .white
+        dismiss(animated: true, completion: {
+            guard let action = self._cancelAction else {
+                return
+            }
+            action._handler?(action)
+        })
+    }
+    
+    @objc private func resignAction() {
         if let textField = _openTextField {
             textField.resignFirstResponder()
         }
     }
     
-    // MARK - UIGestureRecognizerDelegate
+    /**************************** achieve func -end ****************************/
+    
+}
+
+// MARK: UIGestureRecognizerDelegate
+extension JRAlertController: UIGestureRecognizerDelegate {
     
     public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        guard let touchView = touch.view, touchView != tableView else {
+            return false
+        }
+        guard !touchView.isKind(of: NSClassFromString("UITableViewCellContentView")!), !touchView.isKind(of: NSClassFromString("UITableView")!), !touchView.isKind(of: NSClassFromString("UITextField")!) else {
+            return false
+        }
         if gestureRecognizer == _cancelGesture {
-            if touch.view == showView || touch.view!.isKind(of: NSClassFromString("UITableViewCellContentView")!) || touch.view!.isKind(of: NSClassFromString("UITableView")!) {
+            if touchView == view {
+                return true
+            }
+            if touchView == showView {
                 return false
             }
         } else if gestureRecognizer == _resignGesture {
-            if touch.view!.isKind(of: NSClassFromString("UITableViewCellContentView")!) || touch.view!.isKind(of: NSClassFromString("UITableView")!) || touch.view!.isKind(of: NSClassFromString("UITextField")!) {
+            if touchView == view {
                 return false
+            }
+            if touchView == showView {
+                return true
             }
         }
         return true
     }
+    
+}
+
+// MARK: UITextFieldDelegate
+extension JRAlertController: UITextFieldDelegate {
+    
+    public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        guard let textFields = _textFields, let index = textFields.index(of: textField) else {
+            return true
+        }
+        if index == textFields.count-1 {
+            textFields[index].resignFirstResponder()
+            dismiss(animated: true, completion: {
+                guard let preferredAction = self._preferredAction else {
+                    return
+                }
+                preferredAction._handler?(preferredAction)
+            })
+        } else {
+            textFields[index+1].becomeFirstResponder()
+            tableView.scrollToRow(at: IndexPath(row: index+1, section: 0), at: .none, animated: false)
+        }
+        return true
+    }
+    
+}
+
+// MARK: UITableViewDataSource
+extension JRAlertController: UITableViewDataSource {
+    
+    public func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        var count = 0
+        if let textFields = _textFields {
+            count += textFields.count
+        }
+        if let actions = _actions {
+            count += actions.count
+            if _haveAddCancel {
+                count -= 1
+            }
+        }
+        return count
+    }
+    
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let row = indexPath.row
+        var cell: JRAlertControllerCell!
+        var style: JRAlertControllerCell.JRAlertControllerCellStyle = .action
+        if let textFields = _textFields {
+            if row < textFields.count {
+                style = .textField
+            }
+        }
+        let identifier = JRAlertControllerCellReuseIdentifier(byStyle: style)
+        switch style {
+        case .action:
+            var textFieldsCount = 0
+            if let textFields = _textFields {
+                textFieldsCount = textFields.count
+            }
+            if let actions = _actions {
+                var index = row-textFieldsCount
+                if _haveAddCancel {
+                    if index >= _cancelActionIndex! {
+                        index += 1
+                    }
+                }
+                let action = actions[index]
+                if let tempCell = tableView.dequeueReusableCell(withIdentifier: identifier) {
+                    cell = tempCell as? JRAlertControllerCell
+                } else {
+                    tableView.register(NSClassFromString("JRAlertControllerCell"), forCellReuseIdentifier: identifier)
+                    cell = JRAlertControllerCell(style: style, action: action)
+                }
+                cell.load(action: action, controllerStyle: preferredStyle)
+            }
+        case .textField:
+            if let textFields = _textFields {
+                let textField = textFields[row]
+                textField.frame = CGRect(x: 8, y: 6, width: MAXWidth()-16, height: JRAlertControllerCellRowHeight(byStyle: .textField)-12)
+                _textFields?[row] = textField
+                cell = JRAlertControllerCell(style: style, textField: textField)
+                cell.accessoryType = .none
+                cell.selectionStyle = .none
+            }
+        }
+        cell.preservesSuperviewLayoutMargins = false
+        cell.layoutMargins = UIEdgeInsets.zero
+        cell.separatorInset = UIEdgeInsets.zero
+        return cell
+    }
+    
+}
+
+// MARK: UITableViewDelegate
+extension JRAlertController: UITableViewDelegate {
+    
+    public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 0.01
+    }
+    
+    public func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 0.01
+    }
+    
+    public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        let row = indexPath.row
+        if let textFields = textFields {
+            if row < textFields.count {
+                return CGFloat(JRAlertControllerCellRowHeight(byStyle: .textField))
+            } else {
+                return CGFloat(JRAlertControllerCellRowHeight(byStyle: .action))
+            }
+        }
+        return CGFloat(JRAlertControllerCellRowHeight(byStyle: .action))
+    }
+    
+    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let row = indexPath.row
+        if let textFields = _textFields {
+            guard row >= textFields.count else {
+                return
+            }
+        }
+        tableView.deselectRow(at: indexPath, animated: true)
+        let textFieldsCount: Int
+        if let textFields = _textFields {
+            textFieldsCount = textFields.count
+        } else {
+            textFieldsCount = 0
+        }
+        guard let actions = _actions else {
+            return
+        }
+        var index = row-textFieldsCount
+        if _haveAddCancel {
+            if index >= _cancelActionIndex! {
+                index += 1
+            }
+        }
+        dismiss(animated: true, completion: {
+            let action = actions[index]
+            action._handler?(action)
+        })
+    }
+    
+}
+
+// MARK: Registering
+extension JRAlertController {
     
     /*
      * The following annotation comes from IQKeyboardManager(https://github.com/hackiftekhar/IQKeyboardManager)
@@ -665,16 +744,15 @@ public class JRAlertController : UIViewController, UITableViewDelegate, UITableV
             NotificationCenter.default.addObserver(self, selector: #selector(textFieldViewDidBeginEditing(_:)), name: NSNotification.Name.UITextFieldTextDidBeginEditing, object: nil)
             NotificationCenter.default.addObserver(self, selector: #selector(textFieldViewDidEndEditing(_:)), name: NSNotification.Name.UITextFieldTextDidEndEditing, object: nil)
             // Registering for keyboard notification.
-            NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)),                name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-            NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidShow(_:)),                name: NSNotification.Name.UIKeyboardDidShow, object: nil)
-            NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)),                name: NSNotification.Name.UIKeyboardWillHide, object: nil)
-            NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidHide(_:)),                name: NSNotification.Name.UIKeyboardDidHide, object: nil)
-            break
+            NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+            NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidShow(_:)), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
+            NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+            NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidHide(_:)), name: NSNotification.Name.UIKeyboardDidHide, object: nil)
         }
         //  Registering for orientation changes notification
-        NotificationCenter.default.addObserver(self, selector: #selector(willChangeStatusBarOrientation(_:)),          name: NSNotification.Name.UIApplicationWillChangeStatusBarOrientation, object: UIApplication.shared)
+        NotificationCenter.default.addObserver(self, selector: #selector(willChangeStatusBarOrientation(_:)), name: NSNotification.Name.UIApplicationWillChangeStatusBarOrientation, object: UIApplication.shared)
         //  Registering for status bar frame change notification
-        NotificationCenter.default.addObserver(self, selector: #selector(didChangeStatusBarFrame(_:)),          name: NSNotification.Name.UIApplicationDidChangeStatusBarFrame, object: UIApplication.shared)
+        NotificationCenter.default.addObserver(self, selector: #selector(didChangeStatusBarFrame(_:)), name: NSNotification.Name.UIApplicationDidChangeStatusBarFrame, object: UIApplication.shared)
         // Registering for orientation notification.
         UIDevice.current.beginGeneratingDeviceOrientationNotifications()
         NotificationCenter.default.addObserver(self, selector: #selector(deviceOrientationDidChange(_:)), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
@@ -702,17 +780,17 @@ public class JRAlertController : UIViewController, UITableViewDelegate, UITableV
      *
      */
     
-    internal func textFieldViewDidBeginEditing(_ notification:Notification) {
+    @objc private func textFieldViewDidBeginEditing(_ notification:Notification) {
         if let textField = notification.object as? UITextField {
             _openTextField = textField
         }
     }
     
-    internal func textFieldViewDidEndEditing(_ notification:Notification) {
+    @objc private func textFieldViewDidEndEditing(_ notification:Notification) {
         
     }
     
-    internal func keyboardWillShow(_ notification : Notification?) -> Void {
+    @objc private func keyboardWillShow(_ notification: Notification?) -> Void {
         if let info = (notification as NSNotification?)?.userInfo {
             if let kbFrame = (info[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
                 _keyboardHeight = kbFrame.height
@@ -735,59 +813,50 @@ public class JRAlertController : UIViewController, UITableViewDelegate, UITableV
         }
     }
     
-    internal func keyboardDidShow(_ notification : Notification?) -> Void {
+    @objc private func keyboardDidShow(_ notification: Notification?) -> Void {
         
     }
     
-    internal func keyboardWillHide(_ notification : Notification?) -> Void {
+    @objc private func keyboardWillHide(_ notification: Notification?) -> Void {
+        guard let showViewY = _oldShowViewY else {
+            return
+        }
         if _changeKeep {
             _changeKeep = false
-            if let showViewY = _oldShowViewY {
-                UIView.animate(withDuration: 0.2, animations: {
-                    self.showView.y(showViewY)
-                }, completion: { (finish) in
-                    if finish {
-                        if let textField = self._openTextField {
-                            if let textFields = self._textFields {
-                                let index = textFields.index(of: textField)
-                                if let index = index {
-                                    if self.tableView.isScrollEnabled {
-                                        self.tableView.scrollToRow(at: IndexPath(row: index, section: 0), at: .none, animated: false)
-                                    }
-                                    // will call keyboardWillShow
-                                    textField.becomeFirstResponder()
-                                }
-                            }
-                        }
-                    }
-                })
-            }
+            UIView.animate(withDuration: 0.2, animations: {
+                self.showView.y(showViewY)
+            }, completion: { (finish) in
+                guard finish, let textField = self._openTextField, let textFields = self._textFields, let index = textFields.index(of: textField) else {
+                    return
+                }
+                // will call keyboardWillShow
+                textField.becomeFirstResponder()
+                self.tableView.scrollToRow(at: IndexPath(row: index, section: 0), at: .none, animated: false)
+            })
         } else {
             _openTextField = nil
-            if let showViewY = _oldShowViewY {
-                UIView.animate(withDuration: 0.2, animations: {
-                    self.showView.y(showViewY)
-                })
-            }
+            UIView.animate(withDuration: 0.2, animations: {
+                self.showView.y(showViewY)
+            })
         }
         
     }
     
-    internal func keyboardDidHide(_ notification:Notification) {
+    @objc private func keyboardDidHide(_ notification:Notification) {
         
     }
     
-    internal func willChangeStatusBarOrientation(_ notification:Notification) {
+    @objc private func willChangeStatusBarOrientation(_ notification:Notification) {
         if let _ = _openTextField {
             _changeKeep = true
         }
     }
     
-    internal func didChangeStatusBarFrame(_ notification : Notification?) -> Void {
+    @objc private func didChangeStatusBarFrame(_ notification: Notification?) -> Void {
         
     }
     
-    internal func deviceOrientationDidChange(_ interfaceOrientation: UIInterfaceOrientation) {
+    @objc private func deviceOrientationDidChange(_ interfaceOrientation: UIInterfaceOrientation) {
         reloadFrame()
     }
     
@@ -799,10 +868,8 @@ public class JRAlertController : UIViewController, UITableViewDelegate, UITableV
             switch preferredStyle {
             case .actionSheet:
                 titleLable!.width(DeviceWidth())
-                break
             case .alert:
                 titleLable!.width(MAXWidth())
-                break
             }
             topHeight = titleLable!.bottom()
             haveTitle = true
@@ -812,10 +879,8 @@ public class JRAlertController : UIViewController, UITableViewDelegate, UITableV
             switch preferredStyle {
             case .actionSheet:
                 width = DeviceWidth()
-                break
             case .alert:
                 width = MAXWidth()
-                break
             }
             var messageLabelHeight = message.height(withFont: messageLabel!.font, fixedWidth: width)
             if messageLabelHeight > MAXHeight()/8 {
@@ -843,7 +908,6 @@ public class JRAlertController : UIViewController, UITableViewDelegate, UITableV
         case .actionSheet:
             let tableHeight = CGFloat(actionsCount)*JRAlertControllerCellRowHeight(byStyle: .action)
             tableView.frame = CGRect(x: 0, y: tableTop, width: DeviceWidth(), height: tableHeight)
-            break
         case .alert:
             var textFieldsCount = 0
             if let textFields = _textFields {
@@ -851,7 +915,6 @@ public class JRAlertController : UIViewController, UITableViewDelegate, UITableV
             }
             let tableHeight = CGFloat(actionsCount)*JRAlertControllerCellRowHeight(byStyle: .action)+CGFloat(textFieldsCount)*JRAlertControllerCellRowHeight(byStyle: .textField)
             tableView.frame = CGRect(x: 0, y: tableTop, width: MAXWidth(), height: tableHeight)
-            break
         }
         let tableBottom = tableView.bottom()
         
@@ -861,21 +924,17 @@ public class JRAlertController : UIViewController, UITableViewDelegate, UITableV
             case .actionSheet:
                 cutLine!.y(tableBottom)
                 cutLine!.width(DeviceWidth())
-                break
             case .alert:
                 cutLine!.y(tableBottom)
                 cutLine!.width(MAXWidth())
-                break
             }
             switch preferredStyle {
             case .actionSheet:
                 cancelbtn!.y(cutLine!.bottom())
                 cancelbtn!.width(DeviceWidth())
-                break
             case .alert:
                 cancelbtn!.y(cutLine!.bottom())
                 cancelbtn!.width(MAXWidth())
-                break
             }
             showViewHeight = cancelbtn!.bottom()
         } else {
@@ -898,16 +957,13 @@ public class JRAlertController : UIViewController, UITableViewDelegate, UITableV
         switch preferredStyle {
         case .actionSheet:
             showView.frame = CGRect(x: 0, y: DeviceHeight()-showViewHeight, width: DeviceWidth(), height: showViewHeight)
-            if UIApplication.shared.statusBarFrame.height == 40 {
-                // open HOTSPOT
-                showView.y(DeviceHeight()-showView.height()-20)
+            if #available(iOS 11.0, *) {
+                showView.y(view.bounds.height-view.safeAreaInsets.bottom-showView.height())
             } else {
-                showView.y(DeviceHeight()-showView.height())
+                showView.y(view.bounds.height-bottomLayoutGuide.length-showView.height())
             }
-            break
         case .alert:
             showView.frame = CGRect(x: (DeviceWidth()-MAXWidth())/2, y: (DeviceHeight()-showViewHeight)/2, width: MAXWidth(), height: showViewHeight)
-            break
         }
         _oldShowViewY = showView.y()
         if let _ = _openTextField {
@@ -917,160 +973,97 @@ public class JRAlertController : UIViewController, UITableViewDelegate, UITableV
         tableView.reloadData()
     }
     
-    // MARK - UITextFieldDelegate
+}
+
+// MARK: UIViewControllerTransitioningDelegate
+extension JRAlertController: UIViewControllerTransitioningDelegate {
     
-    public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        if let textFields = _textFields {
-            let index = textFields.index(of: textField)
-            if let index = index {
-                if index == textFields.count-1 {
-                    // last one
-                    if let preferredAction = _preferredAction {
-                        if let handler = preferredAction._handler {
-                            handler(preferredAction)
-                        }
-                    }
-                    let tempTextField = textFields[index]
-                    tempTextField.resignFirstResponder()
-                    jr_dismiss()
-                } else {
-                    if tableView.isScrollEnabled {
-                        tableView.scrollToRow(at: IndexPath(row: index+1, section: 0), at: .none, animated: true)
-                    }
-                    let tempTextField = textFields[index+1]
-                    tempTextField.becomeFirstResponder()
-                }
-            }
-        }
-        return true
+    public func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return self
     }
     
-    // MARK - UITableViewDelegate, UITableViewDataSource
-    
-    public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 0.01
+    public func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return self
     }
-    
-    
-    public func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 0.01
-    }
-    
-    public func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-    
-    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        var count = 0
-        if let textFields = _textFields {
-            count += textFields.count
-        }
-        if let actions = _actions {
-            count += actions.count
-            if _haveAddCancel {
-                count -= 1
-            }
-        }
-        return count
-    }
-    
-    public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let row = indexPath.row
-        if let textFields = textFields {
-            if row < textFields.count {
-                return CGFloat(JRAlertControllerCellRowHeight(byStyle: .textField))
-            } else {
-                return CGFloat(JRAlertControllerCellRowHeight(byStyle: .action))
-            }
-        }
-        return CGFloat(JRAlertControllerCellRowHeight(byStyle: .action))
-    }
-    
-    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let row = indexPath.row
-        var cell:JRAlertControllerCell?
-        var style:JRAlertControllerCell.JRAlertControllerCellStyle = .action
-        if let textFields = _textFields {
-            if row < textFields.count {
-                style = .textField
-            }
-        }
-        let identifier = JRAlertControllerCellReuseIdentifier(byStyle: style)
-        switch style {
-        case .action:
-            var textFieldsCount = 0
-            if let textFields = _textFields {
-                textFieldsCount = textFields.count
-            }
-            if let actions = _actions {
-                var index = row-textFieldsCount
-                if _haveAddCancel {
-                    if index >= _cancelActionIndex! {
-                        index += 1
-                    }
-                }
-                let action = actions[index]
-                if let tempCell = tableView.dequeueReusableCell(withIdentifier: identifier) {
-                    cell = tempCell as? JRAlertControllerCell
-                } else {
-                    tableView.register(NSClassFromString("JRAlertControllerCell"), forCellReuseIdentifier: identifier)
-                    cell = tableView.dequeueReusableCell(withIdentifier: identifier) as? JRAlertControllerCell
-                    cell = JRAlertControllerCell(style: style, action: action)
-                }
-                cell?.load(action: action, style2: preferredStyle)
-            }
-            break
-        case .textField:
-            if let textFields = _textFields {
-                let textField = textFields[row]
-                textField.frame = CGRect(x: 8, y: 6, width: MAXWidth()-16, height: JRAlertControllerCellRowHeight(byStyle: .textField)-12)
-                _textFields?[row] = textField
-                cell = JRAlertControllerCell(style: style, textField: textField)
-                cell?.accessoryType = .none
-                cell?.selectionStyle = .none
-            }
-            break
-        }
-        cell?.preservesSuperviewLayoutMargins = false
-        cell?.layoutMargins = UIEdgeInsets.zero
-        cell?.separatorInset = UIEdgeInsets.zero
-        return cell!
-    }
-    
-    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let row = indexPath.row
-        if let textFields = _textFields {
-            if row < textFields.count {
-                return
-            }
-        }
-        tableView.deselectRow(at: indexPath, animated: true)
-        var textFieldsCount = 0
-        if let textFields = _textFields {
-            textFieldsCount = textFields.count
-        }
-        if let actions = _actions {
-            var index = row-textFieldsCount
-            if _haveAddCancel {
-                if index >= _cancelActionIndex! {
-                    index += 1
-                }
-            }
-            let action = actions[index]
-            if let handler = action._handler {
-                handler(action)
-            }
-        }
-        loadDisappearAnimation()
-    }
-    
-    /**************************** achieve func -end ****************************/
     
 }
 
-class JRAlertControllerCell : UITableViewCell {
+// MARK: UIViewControllerAnimatedTransitioning
+extension JRAlertController: UIViewControllerAnimatedTransitioning {
+    
+    fileprivate func showState() {
+        view.backgroundColor = RGBA(r: 0, g: 0, b: 0, a: 0.4)
+        switch preferredStyle {
+        case .actionSheet:
+            if #available(iOS 11.0, *) {
+                showView.y(view.bounds.height-view.safeAreaInsets.bottom-showView.height())
+            } else {
+                showView.y(view.bounds.height-bottomLayoutGuide.length-showView.height())
+            }
+        case .alert:
+            showView.alpha = 1
+            initFirstResponder()
+        }
+    }
+    
+    public func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
+        return 0.3
+    }
+    
+    public func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
+        let isPresenting = view.superview == nil
+        let transitionContainerView = transitionContext.containerView
+        
+        if isPresenting {
+            transitionContainerView.addSubview(view)
+            switch preferredStyle {
+            case .actionSheet:
+                view.backgroundColor = RGBA(r: 255, g: 255, b: 255, a: 0)
+                showView.y(DeviceHeight())
+                UIView.animate(withDuration: transitionDuration(using: transitionContext), animations: {
+                    self.showState()
+                }, completion: { finished in
+                    transitionContext.completeTransition(true)
+                })
+            case .alert:
+                view.backgroundColor = RGBA(r: 255, g: 255, b: 255, a: 0)
+                showView.alpha = 0
+                UIView.animate(withDuration: transitionDuration(using: transitionContext), animations: {
+                    self.showState()
+                }, completion: { finished in
+                    transitionContext.completeTransition(true)
+                })
+            }
+        } else {
+            switch preferredStyle {
+            case .actionSheet:
+                view.backgroundColor = RGBA(r: 0, g: 0, b: 0, a: 0.4)
+                UIView.animate(withDuration: transitionDuration(using: transitionContext), animations: {
+                    self.view.backgroundColor = RGBA(r: 255, g: 255, b: 255, a: 0)
+                    self.showView.y(DeviceHeight())
+                }, completion: { finished in
+                    self.view.removeFromSuperview()
+                    transitionContext.completeTransition(true)
+                })
+            case .alert:
+                view.backgroundColor = RGBA(r: 0, g: 0, b: 0, a: 0.4)
+                showView.alpha = 1
+                UIView.animate(withDuration: 0.3, animations: {
+                    self.showView.alpha = 0
+                    self.view.backgroundColor = RGBA(r: 255, g: 255, b: 255, a: 0)
+                }, completion: { finished in
+                    self.view.removeFromSuperview()
+                    transitionContext.completeTransition(true)
+                })
+            }
+        }
+    }
+    
+}
 
-    public enum JRAlertControllerCellStyle : String {
+class JRAlertControllerCell: UITableViewCell {
+    
+    public enum JRAlertControllerCellStyle: String {
         case action
         case textField
     }
@@ -1118,29 +1111,24 @@ class JRAlertControllerCell : UITableViewCell {
         super.init(coder: aDecoder)
     }
     
-    public func load(action: JRAlertAction, style2: JRAlertControllerStyle = .actionSheet) {
+    public func load(action: JRAlertAction, controllerStyle: JRAlertControllerStyle = .actionSheet) {
         if let label = _jr_label {
-            switch style2 {
+            switch controllerStyle {
             case .actionSheet:
                 _jr_label?.frame = CGRect(x: 0.0, y: 0.0, width: DeviceWidth(), height: jr_rowHeight)
-                break
             case .alert:
                 _jr_label?.frame = CGRect(x: 0.0, y: 0.0, width: MAXWidth(), height: jr_rowHeight)
-                break
             }
             switch action.style {
             case .default:
                 _jr_label!.font = UIFont.systemFont(ofSize: 16)
                 _jr_label!.textColor = .black
-                break
             case .cancel:
                 _jr_label!.font = UIFont.boldSystemFont(ofSize: 16)
                 _jr_label!.textColor = .darkGray
-                break
             case .destructive:
                 _jr_label!.font = UIFont.systemFont(ofSize: 16)
                 _jr_label!.textColor = .red
-                break
             }
             _jr_label!.textAlignment = .center
             label.text = action.title
@@ -1157,21 +1145,18 @@ class JRAlertControllerCell : UITableViewCell {
             _jr_label = UILabel()
             _jr_label!.textAlignment = .center
             contentView.addSubview(_jr_label!)
-            break
         case .textField:
             if let textField = _jr_textField {
                 contentView.addSubview(textField)
             }
-            break
         }
     }
     
 }
 
-
 /**************************** tools func -start ****************************/
 
-fileprivate func RGBA(r:Float, g:Float, b:Float, a:Float = 1) -> UIColor { return UIColor(colorLiteralRed: r/255.0, green: g/255.0, blue: b/255.0, alpha: a) }
+fileprivate func RGBA(r: CGFloat, g: CGFloat, b: CGFloat, a: CGFloat = 1) -> UIColor { return UIColor(red: r/255.0, green: g/255.0, blue: b/255.0, alpha: a) }
 
 fileprivate func DeviceHeight() -> CGFloat { return UIScreen.main.bounds.size.height }
 
@@ -1318,8 +1303,8 @@ extension String {
      
      - returns: The height.
      */
-    func height(withStringAttributes attributes : [String : AnyObject], fixedWidth : CGFloat) -> CGFloat {
-        guard characters.count > 0 && fixedWidth > 0 else {
+    func height(withStringAttributes attributes: [NSAttributedStringKey: Any], fixedWidth: CGFloat) -> CGFloat {
+        guard count > 0 && fixedWidth > 0 else {
             return 0
         }
         let size = CGSize(width: fixedWidth, height: CGFloat.greatestFiniteMagnitude)
@@ -1336,13 +1321,13 @@ extension String {
      
      - returns: The height.
      */
-    func height(withFont font : UIFont = UIFont.systemFont(ofSize: 16), fixedWidth : CGFloat) -> CGFloat {
-        guard characters.count > 0 && fixedWidth > 0 else {
+    func height(withFont font: UIFont = UIFont.systemFont(ofSize: 16), fixedWidth: CGFloat) -> CGFloat {
+        guard count > 0 && fixedWidth > 0 else {
             return 0
         }
         let size = CGSize(width: fixedWidth, height: CGFloat.greatestFiniteMagnitude)
         let text = self as NSString
-        let rect = text.boundingRect(with: size, options:.usesLineFragmentOrigin, attributes: [NSFontAttributeName : font], context:nil)
+        let rect = text.boundingRect(with: size, options:.usesLineFragmentOrigin, attributes: [NSAttributedStringKey.font: font], context:nil)
         return CGFloat(rect.size.height)
     }
     
@@ -1353,8 +1338,8 @@ extension String {
      
      - returns: The width.
      */
-    func width(withStringAttributes attributes : [String : AnyObject]) -> CGFloat {
-        guard characters.count > 0 else {
+    func width(withStringAttributes attributes: [NSAttributedStringKey: Any]) -> CGFloat {
+        guard count > 0 else {
             return 0
         }
         let size = CGSize(width: CGFloat.greatestFiniteMagnitude, height: 0)
@@ -1370,13 +1355,13 @@ extension String {
      
      - returns: The string's width.
      */
-    func width(withFont font : UIFont = UIFont.systemFont(ofSize: 16)) -> CGFloat {
-        guard characters.count > 0 else {
+    func width(withFont font: UIFont = UIFont.systemFont(ofSize: 16)) -> CGFloat {
+        guard count > 0 else {
             return 0
         }
         let size = CGSize(width: CGFloat.greatestFiniteMagnitude, height: 0)
         let text = self as NSString
-        let rect = text.boundingRect(with: size, options:.usesLineFragmentOrigin, attributes: [NSFontAttributeName : font], context:nil)
+        let rect = text.boundingRect(with: size, options:.usesLineFragmentOrigin, attributes: [NSAttributedStringKey.font: font], context:nil)
         return CGFloat(rect.size.width)
     }
     

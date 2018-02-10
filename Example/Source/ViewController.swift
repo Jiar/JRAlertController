@@ -6,8 +6,8 @@
 //  Copyright © 2016年 Jiar. All rights reserved.
 //
 
-import JRAlertController
 import UIKit
+import JRAlertController
 
 class ViewController: UIViewController {
 
@@ -16,15 +16,9 @@ class ViewController: UIViewController {
     var sheetSimple: JRAlertController!
     var sheetMultiple: JRAlertController!
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        initAlertSimple()
-        initAlertMultiple()
-        initSheetSimple()
-        initSheetMultiple()
-    }
+    /******************** JRAlertController -start ********************/
     
-    private func initAlertSimple() {
+    @IBAction func alertSimple(_ sender: Any) {
         alertSimple = JRAlertController(title: "login tip", message: "please input account and password", preferredStyle: .alert)
         let cancelAction = JRAlertAction(title: "cancel", style: .cancel, handler:  {
             (action: JRAlertAction!) -> Void in
@@ -45,9 +39,10 @@ class ViewController: UIViewController {
             textField.isSecureTextEntry = true
             textField.placeholder = "please input password"
         })
+        present(alertSimple, animated: true, completion: nil)
     }
-    
-    private func initAlertMultiple() {
+
+    @IBAction func alertMultiple(_ sender: Any) {
         alertMultiple = JRAlertController(title: "I am title,I am title,I am title,I am title,I am title", message: "I am message, I am message, I am message, I am message, I am message, I am message, I am message, I am message, I am message", preferredStyle: .alert)
         let cancelAction = JRAlertAction(title: "cancel", style: .cancel, handler:  {
             (action: JRAlertAction!) -> Void in
@@ -152,9 +147,10 @@ class ViewController: UIViewController {
         alertMultiple.addAction(archiveAction5)
         alertMultiple.addAction(archiveAction6)
         alertMultiple.preferredAction  = archiveAction6
+        present(alertMultiple, animated: true, completion: nil)
     }
     
-    private func initSheetSimple() {
+    @IBAction func sheetSimple(_ sender: Any) {
         sheetSimple = JRAlertController(title: "blog tip", message: "Please select the option to use the corresponding option to operate your blog", preferredStyle: .actionSheet)
 //        sheetSimple = JRAlertController(title: "blog tip")
 //        sheetSimple = JRAlertController(message: "Please select the option to use the corresponding option to operate your blog")
@@ -179,12 +175,19 @@ class ViewController: UIViewController {
         sheetSimple.addAction(modifyAction)
         sheetSimple.addAction(deleteAction)
         sheetSimple.addAction(cancelAction)
+        present(sheetSimple, animated: true, completion: nil)
     }
     
-    private func initSheetMultiple() {
+    @IBAction func sheetMultiple(_ sender: Any) {
         sheetMultiple = JRAlertController(title: "I am title,I am title,I am title,I am title,I am title", message: "I am message, I am message, I am message, I am message, I am message, I am message, I am message, I am message, I am message", preferredStyle: .actionSheet)
-        let cancelAction = JRAlertAction(title: "cancel", style: .cancel, handler: nil)
-        let deleteAction = JRAlertAction(title: "delete", style: .destructive, handler: nil)
+        let cancelAction = JRAlertAction(title: "cancel", style: .cancel, handler:  {
+            (action: JRAlertAction!) -> Void in
+            print("cancel")
+        })
+        let deleteAction = JRAlertAction(title: "delete", style: .destructive, handler: {
+            (action: JRAlertAction!) -> Void in
+            print("delete")
+        })
         let archiveAction = JRAlertAction(title: "archive", style: .default, handler: {
             (action: JRAlertAction!) -> Void in
             print("archive")
@@ -222,24 +225,7 @@ class ViewController: UIViewController {
         sheetMultiple.addAction(archiveAction4)
         sheetMultiple.addAction(archiveAction5)
         sheetMultiple.addAction(archiveAction6)
-    }
-    
-    /******************** JRAlertController -start ********************/
-    
-    @IBAction func alertSimple(_ sender: Any) {
-        alertSimple.jr_show(onRootView: self)
-    }
-
-    @IBAction func alertMultiple(_ sender: Any) {
-        alertMultiple.jr_show(onRootView: self)
-    }
-    
-    @IBAction func sheetSimple(_ sender: Any) {
-        sheetSimple.jr_show(onRootView: self)
-    }
-    
-    @IBAction func sheetMultiple(_ sender: Any) {
-        sheetMultiple.jr_show(onRootView: self)
+        present(sheetMultiple, animated: true, completion: nil)
     }
     
     /******************** JRAlertController -end ********************/
@@ -268,7 +254,7 @@ class ViewController: UIViewController {
             textField.isSecureTextEntry = true
             textField.placeholder = "please input password"
         })
-        self.present(alertController, animated: true, completion: nil)
+        present(alertController, animated: true, completion: nil)
     }
     
     @IBAction func UIAlertControllerAlertMultiple(_ sender: Any) {
@@ -376,7 +362,7 @@ class ViewController: UIViewController {
         alertController.addAction(archiveAction5)
         alertController.addAction(archiveAction6)
         alertController.preferredAction  = archiveAction6
-        self.present(alertController, animated: true, completion: nil)
+        present(alertController, animated: true, completion: nil)
     }
     
     @IBAction func UIAlertControllerSheetSimple(_ sender: Any) {
@@ -401,13 +387,19 @@ class ViewController: UIViewController {
         alertController.addAction(modifyAction)
         alertController.addAction(deleteAction)
         alertController.addAction(cancelAction)
-        self.present(alertController, animated: true, completion: nil)
+        present(alertController, animated: true, completion: nil)
     }
     
     @IBAction func UIAlertControllerSheetMultiple(_ sender: Any) {
         let alertController = UIAlertController(title: "I am title,I am title,I am title,I am title,I am title", message: "I am message, I am message, I am message, I am message, I am message, I am message, I am message, I am message, I am message", preferredStyle: .actionSheet)
-        let cancelAction = UIAlertAction(title: "cancel", style: .cancel, handler: nil)
-        let deleteAction = UIAlertAction(title: "delete", style: .destructive, handler: nil)
+        let cancelAction = UIAlertAction(title: "cancel", style: .cancel, handler: {
+            (action: UIAlertAction!) -> Void in
+            print("cancel")
+        })
+        let deleteAction = UIAlertAction(title: "delete", style: .destructive, handler: {
+            (action: UIAlertAction!) -> Void in
+            print("delete")
+        })
         let archiveAction = UIAlertAction(title: "archive", style: .default, handler: {
             (action: UIAlertAction!) -> Void in
             print("archive")
@@ -445,7 +437,7 @@ class ViewController: UIViewController {
         alertController.addAction(archiveAction4)
         alertController.addAction(archiveAction5)
         alertController.addAction(archiveAction6)
-        self.present(alertController, animated: true, completion: nil)
+        present(alertController, animated: true, completion: nil)
     }
     
     /******************** UIAlertController -end ********************/

@@ -40,8 +40,8 @@ Based on Apple's UIAlertController control API, rebuilt it with swift, JRAlertCo
 ## Requirements
 
 - iOS 8.0+
-- Xcode 8.0+
-- Swift 3.0+
+- Xcode 9.0+
+- Swift 4.0+
 
 ## Installation
 
@@ -53,7 +53,7 @@ Based on Apple's UIAlertController control API, rebuilt it with swift, JRAlertCo
 $ gem install cocoapods
 ```
 
-> CocoaPods 1.1.0+ is required to build JRAlertController 1.0.0
+> CocoaPods 1.1.0+ is required to build JRAlertController 1.1.0
 
 To integrate JRAlertController into your Xcode project using CocoaPods, specify it in your `Podfile`:
 
@@ -63,7 +63,7 @@ platform :ios, '8.0'
 use_frameworks!
 
 target '<Your Target Name>' do
-    pod 'JRAlertController', '~> 1.0.0'
+    pod 'JRAlertController', '~> 1.1.0'
 end
 ```
 
@@ -134,9 +134,7 @@ $ git submodule add https://github.com/Jiar/JRAlertController.git
             textField.isSecureTextEntry = true
             textField.placeholder = "please input password"
         })
-        // must use this function to show JRAlertController
-        // self is a UIControllerView
-        alertController.jr_show(onRootView: self)
+        present(alertController, animated: true, completion: nil)
 ```
 
 #### JRAlertController_alert_multiple
@@ -245,9 +243,7 @@ $ git submodule add https://github.com/Jiar/JRAlertController.git
         alertController.addAction(archiveAction5)
         alertController.addAction(archiveAction6)
         alertController.preferredAction  = archiveAction6
-        // must use this function to show JRAlertController
-        // self is a UIControllerView
-        alertController.jr_show(onRootView: self)
+        present(alertController, animated: true, completion: nil)
 ```
 
 #### JRAlertController_sheet_simple
@@ -276,16 +272,20 @@ $ git submodule add https://github.com/Jiar/JRAlertController.git
         alertController.addAction(modifyAction)
         alertController.addAction(deleteAction)
         alertController.addAction(cancelAction)
-        // must use this function to show JRAlertController
-        // self is a UIControllerView
-        alertController.jr_show(onRootView: self)
+        present(alertController, animated: true, completion: nil)
 ```
 
 #### JRAlertController_sheet_multiple
 ```swift
         let alertController = JRAlertController(title: "I am title,I am title,I am title,I am title,I am title", message: "I am message, I am message, I am message, I am message, I am message, I am message, I am message, I am message, I am message", preferredStyle: .actionSheet)
-        let cancelAction = JRAlertAction(title: "cancel", style: .cancel, handler: nil)
-        let deleteAction = JRAlertAction(title: "delete", style: .destructive, handler: nil)
+        let cancelAction = JRAlertAction(title: "cancel", style: .cancel, handler: {
+            (action: JRAlertAction!) -> Void in
+            print("cancel")
+        })
+        let deleteAction = JRAlertAction(title: "delete", style: .destructive, handler: {
+            (action: JRAlertAction!) -> Void in
+            print("delete")
+        })
         let archiveAction = JRAlertAction(title: "archive", style: .default, handler: {
             (action: JRAlertAction!) -> Void in
             print("archive")
@@ -323,9 +323,7 @@ $ git submodule add https://github.com/Jiar/JRAlertController.git
         alertController.addAction(archiveAction4)
         alertController.addAction(archiveAction5)
         alertController.addAction(archiveAction6)
-        // must use this function to show JRAlertController
-        // self is a UIControllerView
-        alertController.jr_show(onRootView: self)
+        present(alertController, animated: true, completion: nil)
 ```
 
 
